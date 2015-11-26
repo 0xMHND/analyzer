@@ -1,8 +1,8 @@
 CXX=gcc
 CFLAGS=-Wall -O3 -g -std=c99
-SOURCE=new.c
+SOURCE=
 HEADER=
-TARGET=PROG
+TARGET=
 
 default: compile
 
