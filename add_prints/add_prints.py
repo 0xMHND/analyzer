@@ -1,20 +1,27 @@
-from __future__ import print_function #Python 3.x only?
 import sys, re
 
 DbCreate_pattern = re.compile(r"(ocrDbCreate\(([^;]+),([^;]+),([^;]+),([^;]+),([^;]+),([^;]+)\)[^ \t\n\r\f\v]*;)(?!\/\*Auto-Generated Print:\*\/)",re.MULTILINE)
-DbCreate_substr = "\\1/*Auto-Generated Print:*/PRINTF(\"DbCreate: db=%p addr=%p len=%lu flags=0x%x\\\\n\",\\2,\\3,\\4,\\5);"
+DbCreate_substr = "\\1/*Auto-Generated Print:*/PRINTF(\"DbCreate: %p %p %lu %#x\\\\n\",\\2,\\3,\\4,\\5);"
+
+DbDestroy_pattern = re.compile(r"(ocrDbDestroy\(([^;]+)\)[^ \t\n\r\f\v]*;)(?!\/\*Auto-Generated Print:\*\/)",re.MULTILINE)
+DbDestroy_substr = "\\1/*Auto-Generated Print:*/PRINTF(\"DbDestroy: %p\\\\n\",\\2);"
+
+DbRelease_pattern = re.compile(r"(ocrDbRelease\(([^;]+)\)[^ \t\n\r\f\v]*;)(?!\/\*Auto-Generated Print:\*\/)",re.MULTILINE)
+DbRelease_substr = "\\1/*Auto-Generated Print:*/PRINTF(\"DbRelease: %p\\\\n\",\\2);"
 
 def main(filename):
 
-	old_file = open(filename, 'r')
-	s = old_file.read(-1)
-	old_file.close()
+	f_read = open(filename, "r")
+	s = f_read.read(-1)
+	f_read.close();
 
 	s = DbCreate_pattern.sub(DbCreate_substr, s)
+	s = DbDestroy_pattern.sub(DbDestroy_substr, s)
+	s = DbRelease_pattern.sub(DbRelease_substr, s)
 
-	new_file = open("output.c", 'w')
-	new_file.write(s)
-	new_file.close();
+	f_write = open(filename, "w")
+	f_write.write(s)
+	f_write.close();
 
 	print("Done.")
 	

@@ -1,16 +1,7 @@
-Choose your example OCR program of choice.
-COPY (not move) its source and config file in this directory.
+Run add_prints.py script to add print statements after each datablock allocation
+	python3 add_prints.py <filename.c>
 
-Run:
-	python3 add_prints.py <ocr_filename>
+THIS WILL MODIFY THE .c FILE! BACKUP BACKUP BACKUP
 
-This will add print statements in source file where needed.
-THE .c FILE WILL BE MODIFIED
-
-Define the absolute path to your xstack clone-root:
-	export CLONE_ROOT=<YourPathHere>
-(The xstack clone-root should contain folders named "ocr" and "apps")
-
-Run OCR program:
-	make -f Makefile.<OCR_TYPE> run
-(only OCR_TYPE=x86 support at the moment)
+Compile and run the program as usual using OCR
+Save stdout to a text file using redirection for later analysis
