@@ -10,11 +10,11 @@
 #include <stdio.h>
 
 //following define is temporary
-#define NUM_COMMANDS 2
+#define NUM_COMMANDS 6
 
 void plot_create_vs_time(struct DbCreate_info * c, int size)
 {
-    char * commandsForGnuplot[] = {"set title \"Bytes Allocated vs Program ticks\"", "plot 'data.temp'"};
+    char * commandsForGnuplot[] = {"set terminal png truecolor", "set output \'plot.png\'", "set style data lines", "set autoscale", "set title \'TITLEEEEE\'", "plot \'data.temp\'"};
 	int xvals[size];
 	int yvals[size];
 
@@ -26,15 +26,14 @@ void plot_create_vs_time(struct DbCreate_info * c, int size)
 	}
 
 	FILE * temp = fopen("data.temp", "w");
-	//Opens an interface that one can use to send commands as if they were typing into the
-	//gnuplot command line.  "The -persistent" keeps the plot open even after your
-	//C program terminates.
-	FILE * gnuplotPipe = popen ("gnuplot -persistent", "w");
-
 	for (int i=0; i < size; i++) {
 		fprintf(temp, "%d %d\n", xvals[i], yvals[i]); //Write the data to a temporary file
 	}
 
+	//Opens an interface that one can use to send commands as if they were typing into the
+	//gnuplot command line.  "The -persistent" keeps the plot open even after your
+	//C program terminates.
+	FILE * gnuplotPipe = popen ("gnuplot", "w");// -persistent", "w");
 	for (int i=0; i < NUM_COMMANDS; i++) {
 		fprintf(gnuplotPipe, "%s\n", commandsForGnuplot[i]); //Send commands to gnuplot one by one.
 	}
