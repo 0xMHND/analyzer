@@ -2,22 +2,29 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <time.h>
 
 #define BUF_SIZE 256
-//#define format string
+//#define format string at some point
 
+//contains arguments of each ocrDbCreate() call
 struct DbCreate_info {
+	clock_t time;
 	void *db;
 	void *addr;
 	uint64_t len;
 	uint16_t flags;
 };
 
+//contains arguments of each ocrDbDestroy() call
 struct DbDestroy_info {
+	clock_t time;
 	void *db;
 };
 
+//contains arguments of each ocrDbRelease() call
 struct DbRelease_info {
+	clock_t time;
 	void *db;
 };
 
@@ -33,31 +40,42 @@ int main(int argc, char** argv)
 	struct DbRelease_info * DbRelease_data;
 	void * tmp = NULL;
 
+	//make sure an input file has been entered
 	if (argc != 2) {
 		printf("Usage: %s <filename>\n", argv[0]);
 		exit(1);
 	}
 
+	//open input file
 	if ((f = fopen(argv[1],"r")) == NULL) {
 		fprintf(stderr,"Can't open input file %s\n", argv[1]);
 		exit(2);
 	}
 
+	//assign memory to each pointer where size=1
 	DbCreate_data  = malloc(sizeof(struct DbCreate_info));
 	DbDestroy_data = malloc(sizeof(struct DbDestroy_info));
 	DbRelease_data = malloc(sizeof(struct DbRelease_info));
 
+	//essentially while(!feof(f)), the break case is below
+	//Doing it this way ensures the loop ends exactly when eof is reached
 	while (1) {
 
+		//read one line of input file
 		fgets(buf, BUF_SIZE, f);
 	
+		//break case
 		if (feof(f))
 			break;
 
+		//Extract characters from line until whispace is reached
 		token = strtok(buf," \n\t");
 
+		//If this first set of chacters matches "DbCreate:"
+		//Then the following information must be recorded in the following manner
 		if(token != NULL && !strcmp(token,"DbCreate:")) {
 
+			//if the array is too small for another element, double its size
 			if (create_count >= create_size) {
 				tmp = (void *)malloc(2 * create_size * sizeof(struct DbCreate_info));
 				memcpy(tmp, DbCreate_data, create_size * sizeof(struct DbCreate_info));
@@ -66,6 +84,11 @@ int main(int argc, char** argv)
 				tmp = NULL;
 				create_size *= 2;
 			}
+
+			//Convert each following token into its appropriate data type (instead of string)
+			//Save the data in the correct struct variable
+			token = strtok(NULL," \n\t");
+			DbCreate_data[create_count].time = (clock_t)strtol(token, NULL, 10);
 
 			token = strtok(NULL," \n\t");
 			DbCreate_data[create_count].db = (void *)strtol(token, NULL, 0);
@@ -79,15 +102,20 @@ int main(int argc, char** argv)
 			token = strtok(NULL," \n\t");
 			DbCreate_data[create_count].flags = (uint16_t)strtol(token,NULL,0);
 
+			//increase the position in the array of structs
 			create_count++;
 
+			//if there are leftover tokens, there is a possible error
 			token = strtok(NULL," \n\t");
 			if (token != NULL)
 				printf("Warning leftover token: %s\n", token);
 		}
 
+		//If this first set of chacters matches "DbDestroy:"
+		//Then the following information must be recorded in the following manner
 		else if(token != NULL && !strcmp(token,"DbDestroy:")) {
 
+			//if the array is too small for another element, double its size
 			if (destroy_count >= destroy_size) {
 				tmp = (void *)malloc(2 * destroy_size * sizeof(struct DbDestroy_info));
 				memcpy(tmp, DbDestroy_data, destroy_size * sizeof(struct DbDestroy_info));
@@ -97,18 +125,28 @@ int main(int argc, char** argv)
 				destroy_size *= 2;
 			}
 
+			//Convert each following token into its appropriate data type (instead of string)
+			//Save the data in the correct struct variable
+			token = strtok(NULL," \n\t");
+			DbDestroy_data[destroy_count].time = (clock_t)strtol(token, NULL, 10);
+
 			token = strtok(NULL," \n\t");
 			DbDestroy_data[destroy_count].db = (void *)strtol(token, NULL, 0);
 
+			//increase the position in the array of structs
 			destroy_count++;
 
+			//if there are leftover tokens, there is a possible error
 			token = strtok(NULL," \n\t");
 			if (token != NULL)
 				printf("Warning leftover token: %s\n", token);
 		}
 
+		//If this first set of chacters matches "DbRelease:"
+		//Then the following information must be recorded in the following manner
 		else if(token != NULL && !strcmp(token,"DbRelease:")) {
 
+			//if the array is too small for another element, double its size
 			if (release_count >= release_size) {
 				tmp = (void *)malloc(2 * release_size * sizeof(struct DbRelease_info));
 				memcpy(tmp, DbRelease_data, release_size * sizeof(struct DbRelease_info));
@@ -118,44 +156,57 @@ int main(int argc, char** argv)
 				release_size *= 2;
 			}
 
+			//Convert each following token into its appropriate data type (instead of string)
+			//Save the data in the correct struct variable
+			token = strtok(NULL," \n\t");
+			DbRelease_data[release_count].time = (clock_t)strtol(token, NULL, 10);
+
 			token = strtok(NULL," \n\t");
 			DbRelease_data[release_count].db = (void *)strtol(token, NULL, 0);
 
+			//increase the position in the array of structs
 			release_count++;
 
+			//if there are leftover tokens, there is a possible error
 			token = strtok(NULL," \n\t");
 			if (token != NULL)
 				printf("Warning leftover token: %s\n", token);
 		}
 	}
 
+	//close input file after it had been read
 	fclose(f);
 
+	//print each element in the DbCreate array
 	printf("\nDB CREATE -----------------------------------------------------------\n");
 	for (int i = 0; i < create_count; i++){
-		printf("\tdb=%p addr=%p len=%lu flags=0x%04x\n",DbCreate_data[i].db,DbCreate_data[i].addr,DbCreate_data[i].len,DbCreate_data[i].flags);
+		printf("\ttime=%ld db=%p addr=%p len=%lu flags=0x%04x\n",DbCreate_data[i].time,DbCreate_data[i].db,DbCreate_data[i].addr,DbCreate_data[i].len,DbCreate_data[i].flags);
 	}
 	printf("---------------------------------------------------------------------\n");
 
+	//print each element in the DbDestroy array
 	printf("\nDB DESTROY ----------------------------------------------------------\n");
 	for (int i = 0; i < destroy_count; i++){
-		printf("\tdb=%p\n",DbDestroy_data[i].db);
+		printf("\ttime=%ld db=%p\n",DbDestroy_data[i].time,DbDestroy_data[i].db);
 	}
 	printf("---------------------------------------------------------------------\n");
 
+	//print each element in the DbRelease array
 	printf("\nDB RELEASE ----------------------------------------------------------\n");
 	for (int i = 0; i < release_count; i++){
-		printf("\tdb=%p\n",DbRelease_data[i].db);
+		printf("\ttime=%ld db=%p\n",DbRelease_data[i].time,DbRelease_data[i].db);
 	}
 	printf("---------------------------------------------------------------------\n");
 
+	//Print the number of allocations, destructions, and releases 
 	printf("\n");
 	printf("Number of Datablock creations: %d\n", create_count);
-
 	printf("Number of Datablock destructions: %d\n", destroy_count);
-
 	printf("Number of Datablock releases: %d\n", release_count);
 	printf("\n");
+
+//graph data?
+//http://stackoverflow.com/questions/3521209/making-c-code-plot-a-graph-automatically
 
 	return 0;
 }

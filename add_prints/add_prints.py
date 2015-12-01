@@ -1,13 +1,21 @@
 import sys, re
 
+#This regular expression finds each ocrDbCreate() function in the code
+#It also saves the whole function in a group, as well as the individual arguments
+#This is implemented with a negative lookahead so that each function is only matched once
 DbCreate_pattern = re.compile(r"(ocrDbCreate\(([^;]+),([^;]+),([^;]+),([^;]+),([^;]+),([^;]+)\)[^ \t\n\r\f\v]*;)(?!\/\*Auto-Generated Print:\*\/)",re.MULTILINE)
-DbCreate_substr = "\\1/*Auto-Generated Print:*/PRINTF(\"DbCreate: %p %p %lu %#x\\\\n\",\\2,\\3,\\4,\\5);"
+#This string is what replaces an ocrDbCreate() match.
+#It is composed of the function itself, followed by a comment to identify that the following is automatically modified
+#followed by a PRINTF statement of clock() and all the important arguments of the function
+DbCreate_substr = "\\1/*Auto-Generated Print:*/PRINTF(\"DbCreate: %ld %p %p %lu %#x\\\\n\",clock(),\\2,\\3,\\4,\\5);"
 
+#Same for ocrDbDestroy()
 DbDestroy_pattern = re.compile(r"(ocrDbDestroy\(([^;]+)\)[^ \t\n\r\f\v]*;)(?!\/\*Auto-Generated Print:\*\/)",re.MULTILINE)
-DbDestroy_substr = "\\1/*Auto-Generated Print:*/PRINTF(\"DbDestroy: %p\\\\n\",\\2);"
+DbDestroy_substr = "\\1/*Auto-Generated Print:*/PRINTF(\"DbDestroy: %ld %p\\\\n\",clock(),\\2);"
 
+#Same for ocrDbRelease()
 DbRelease_pattern = re.compile(r"(ocrDbRelease\(([^;]+)\)[^ \t\n\r\f\v]*;)(?!\/\*Auto-Generated Print:\*\/)",re.MULTILINE)
-DbRelease_substr = "\\1/*Auto-Generated Print:*/PRINTF(\"DbRelease: %p\\\\n\",\\2);"
+DbRelease_substr = "\\1/*Auto-Generated Print:*/PRINTF(\"DbRelease: %ld %p\\\\n\",clock(),\\2);"
 
 
 def main(filename):

@@ -1,4 +1,5 @@
-Run add_prints.py script to add print statements after each datablock allocation
+Run add_prints.py script to add print statements after each datablock allocation, destruction, or release
+
 	python3 add_prints.py <filename.c>
 
 THIS WILL MODIFY THE .c FILE! BACKUP BACKUP BACKUP
