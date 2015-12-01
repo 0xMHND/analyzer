@@ -1,7 +1,7 @@
 CXX=gcc
 CFLAGS=-Wall -O3 -g -std=c99
 SOURCE=parser.c
-HEADER=
+HEADER=parser.h
 TARGET=Parser
 
 default: compile

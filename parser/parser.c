@@ -1,32 +1,5 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdint.h>
-#include <time.h>
-
-#define BUF_SIZE 256
-//#define format string at some point
-
-//contains arguments of each ocrDbCreate() call
-struct DbCreate_info {
-	clock_t time;
-	void *db;
-	void *addr;
-	uint64_t len;
-	uint16_t flags;
-};
-
-//contains arguments of each ocrDbDestroy() call
-struct DbDestroy_info {
-	clock_t time;
-	void *db;
-};
-
-//contains arguments of each ocrDbRelease() call
-struct DbRelease_info {
-	clock_t time;
-	void *db;
-};
+#include "parser.h"
+#include "gnuplot.c"
 
 int main(int argc, char** argv)
 {
@@ -207,6 +180,8 @@ int main(int argc, char** argv)
 
 //graph data?
 //http://stackoverflow.com/questions/3521209/making-c-code-plot-a-graph-automatically
+
+	plot_create_vs_time(DbCreate_data, create_count);
 
 	return 0;
 }
