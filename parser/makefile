@@ -9,6 +9,7 @@ default: compile
 compile:
 	${CXX} ${CFLAGS} ${SOURCE} ${HEADER} -o ${TARGET} -lm
 
+#for GDB
 debug: new.c
 	${CXX} ${CFLAGS} ${SOURCE} ${HEADER} -o ${TARGET} -DEBUG -lm
 
