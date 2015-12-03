@@ -14,7 +14,7 @@
 
 void plot_create_vs_time(struct DbCreate_info * c, int size)
 {
-    char * commandsForGnuplot[] = {"set terminal png truecolor", "set output \'create.png\'", "set style data lines", "set autoscale", "set title \'TITLEEEEE\'", "plot \'data.temp\'"};
+    char * commandsForGnuplot[] = {"set terminal png truecolor", "set output \'create.png\'", "set style data lines", "set autoscale", "set title \'TITLEEEEE\'", "plot \'create.dat\'"};
 	int xvals[size];
 	int yvals[size];
 
@@ -25,10 +25,11 @@ void plot_create_vs_time(struct DbCreate_info * c, int size)
 		yvals[i] = yvals[i-1] + c[i].len;
 	}
 
-	FILE * temp = fopen("data.temp", "w");
+	FILE * temp = fopen("create.dat", "w");
 	for (int i=0; i < size; i++) {
 		fprintf(temp, "%d %d\n", xvals[i], yvals[i]); //Write the data to a temporary file
 	}
+	fclose(temp);
 
 	//Opens an interface that one can use to send commands as if they were typing into the
 	//gnuplot command line.  "The -persistent" keeps the plot open even after your
@@ -40,9 +41,10 @@ void plot_create_vs_time(struct DbCreate_info * c, int size)
 	pclose(gnuplotPipe);
 }
 
-void plot_usage_vs_time(struct DbCreate_info * c, struct DbDestroy_info * d, int size)
+void plot_usage_vs_time(struct DbCreate_info * c, int csize, struct DbDestroy_info * d, int dsize)
 {
     char * commandsForGnuplot[] = {"set terminal png truecolor", "set output \'usage.png\'", "set style data lines", "set autoscale", "set title \'TITLEEEEE\'", "plot \'usage.dat\'"};
+	int size = dsize + csize;
 	int xvals[size];
 	int yvals[size];
 	int ccount = 1, dcount = 0;
@@ -52,7 +54,7 @@ void plot_usage_vs_time(struct DbCreate_info * c, struct DbDestroy_info * d, int
 	yvals[0] = c[0].len;
 	for (int i = 1; i < size; i++) {
 
-		if(c[ccount].time < d[dcount].time) {
+		if(c[ccount].time < d[dcount].time && ccount < csize) {
 			xvals[i] = c[ccount].time;
 			yvals[i] = yvals[i-1] + c[ccount].len;
 			ccount++;
@@ -70,10 +72,11 @@ void plot_usage_vs_time(struct DbCreate_info * c, struct DbDestroy_info * d, int
 		}	
 	}
 
-	FILE * temp = fopen("data.temp", "w");
+	FILE * temp = fopen("usage.dat", "w");
 	for (int i=0; i < size; i++) {
 		fprintf(temp, "%d %d\n", xvals[i], yvals[i]); //Write the data to a temporary file
 	}
+	fclose(temp);
 
 	//Opens an interface that one can use to send commands as if they were typing into the
 	//gnuplot command line.  Outputs result to an image (png) file.

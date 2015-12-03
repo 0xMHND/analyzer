@@ -182,7 +182,7 @@ int main(int argc, char** argv)
 //http://stackoverflow.com/questions/3521209/making-c-code-plot-a-graph-automatically
 
 	plot_create_vs_time(DbCreate_data, create_count);
-	plot_usage_vs_time(DbCreate_data, DbDestroy_data, create_count+destroy_count);
+	plot_usage_vs_time(DbCreate_data, create_count, DbDestroy_data, destroy_count);
 
 	return 0;
 }
