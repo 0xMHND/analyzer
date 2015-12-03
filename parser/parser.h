@@ -12,7 +12,7 @@
 //contains arguments of each ocrDbCreate() call
 struct DbCreate_info {
 	clock_t time;
-	void *db;
+	uint64_t db;
 	void *addr;
 	uint64_t len;
 	uint16_t flags;
@@ -21,12 +21,12 @@ struct DbCreate_info {
 //contains arguments of each ocrDbDestroy() call
 struct DbDestroy_info {
 	clock_t time;
-	void *db;
+	uint64_t db;
 };
 
 //contains arguments of each ocrDbRelease() call
 struct DbRelease_info {
 	clock_t time;
-	void *db;
+	uint64_t db;
 };
 

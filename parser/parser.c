@@ -64,7 +64,7 @@ int main(int argc, char** argv)
 			DbCreate_data[create_count].time = (clock_t)strtol(token, NULL, 10);
 
 			token = strtok(NULL," \n\t");
-			DbCreate_data[create_count].db = (void *)strtol(token, NULL, 0);
+			DbCreate_data[create_count].db = (uint64_t)strtol(token, NULL, 0);
 
 			token = strtok(NULL," \n\t");
 			DbCreate_data[create_count].addr = (void *)strtol(token, NULL, 0);
@@ -104,7 +104,7 @@ int main(int argc, char** argv)
 			DbDestroy_data[destroy_count].time = (clock_t)strtol(token, NULL, 10);
 
 			token = strtok(NULL," \n\t");
-			DbDestroy_data[destroy_count].db = (void *)strtol(token, NULL, 0);
+			DbDestroy_data[destroy_count].db = (uint64_t)strtol(token, NULL, 0);
 
 			//increase the position in the array of structs
 			destroy_count++;
@@ -135,7 +135,7 @@ int main(int argc, char** argv)
 			DbRelease_data[release_count].time = (clock_t)strtol(token, NULL, 10);
 
 			token = strtok(NULL," \n\t");
-			DbRelease_data[release_count].db = (void *)strtol(token, NULL, 0);
+			DbRelease_data[release_count].db = (uint64_t)strtol(token, NULL, 0);
 
 			//increase the position in the array of structs
 			release_count++;
@@ -153,21 +153,21 @@ int main(int argc, char** argv)
 	//print each element in the DbCreate array
 	printf("\nDB CREATE -----------------------------------------------------------\n");
 	for (int i = 0; i < create_count; i++){
-		printf("\ttime=%ld db=%p addr=%p len=%lu flags=0x%04x\n",DbCreate_data[i].time,DbCreate_data[i].db,DbCreate_data[i].addr,DbCreate_data[i].len,DbCreate_data[i].flags);
+		printf("\ttime=%ld db=0x%lx addr=%p len=%lu flags=0x%04x\n",DbCreate_data[i].time,DbCreate_data[i].db,DbCreate_data[i].addr,DbCreate_data[i].len,DbCreate_data[i].flags);
 	}
 	printf("---------------------------------------------------------------------\n");
 
 	//print each element in the DbDestroy array
 	printf("\nDB DESTROY ----------------------------------------------------------\n");
 	for (int i = 0; i < destroy_count; i++){
-		printf("\ttime=%ld db=%p\n",DbDestroy_data[i].time,DbDestroy_data[i].db);
+		printf("\ttime=%ld db=0x%lx\n",DbDestroy_data[i].time,DbDestroy_data[i].db);
 	}
 	printf("---------------------------------------------------------------------\n");
 
 	//print each element in the DbRelease array
 	printf("\nDB RELEASE ----------------------------------------------------------\n");
 	for (int i = 0; i < release_count; i++){
-		printf("\ttime=%ld db=%p\n",DbRelease_data[i].time,DbRelease_data[i].db);
+		printf("\ttime=%ld db=0x%lx\n",DbRelease_data[i].time,DbRelease_data[i].db);
 	}
 	printf("---------------------------------------------------------------------\n");
 
@@ -182,6 +182,7 @@ int main(int argc, char** argv)
 //http://stackoverflow.com/questions/3521209/making-c-code-plot-a-graph-automatically
 
 	plot_create_vs_time(DbCreate_data, create_count);
+	plot_usage_vs_time(DbCreate_data, DbDestroy_data, create_count+destroy_count);
 
 	return 0;
 }

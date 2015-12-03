@@ -1,133 +1,140 @@
+Extracting WORKLOAD_ARGS from the command-line
 WORKLOAD_ARGS used: '5'
 Building libocr.so...
-make[1]: Entering directory '/home/luke/Desktop/senior_design/xstack/ocr/build/x86'
-[32m>>>> Compile command for .c files is[1;30m 'gcc -I . -I /home/luke/Desktop/senior_design/xstack/ocr/inc -I /home/luke/Desktop/senior_design/xstack/ocr/src -I /home/luke/Desktop/senior_design/xstack/ocr/src/inc -g -Wall  -DOCR_DEBUG -DOCR_DEBUG_LVL=DEBUG_LVL_WARN -DOCR_DEBUG_API -DOCR_DEBUG_ALLOCATOR -DDEBUG_LVL_ALLOCATOR=DEBUG_LVL_WARN -DOCR_DEBUG_COMP_PLATFORM -DOCR_DEBUG_COMM_PLATFORM -DOCR_DEBUG_COMM_API -DOCR_DEBUG_COMM_WORKER -DOCR_DEBUG_COMP_TARGET -DOCR_DEBUG_DATABLOCK -DOCR_DEBUG_EVENT -DOCR_DEBUG_GUID -DOCR_DEBUG_INIPARSING -DOCR_DEBUG_MACHINE -DOCR_DEBUG_MEM_PLATFORM -DOCR_DEBUG_MEM_TARGET -DOCR_DEBUG_POLICY  -DOCR_DEBUG_SAL -DOCR_DEBUG_SCHEDULER -DOCR_DEBUG_SCHEDULER_HEURISTIC -DOCR_DEBUG_SCHEDULER_OBJECT -DOCR_DEBUG_STATS  -DOCR_DEBUG_SYNC -DOCR_DEBUG_SYSBOOT -DOCR_DEBUG_TASK -DOCR_DEBUG_UTIL -DDEBUG_LVL_UTIL=DEBUG_LVL_WARN -DOCR_DEBUG_WORKER -DOCR_DEBUG_WORKPILE -DOCR_TRACE_API -DOCR_TRACE_ALLOCATOR -DOCR_TRACE_COMP_PLATFORM -DOCR_TRACE_COMM_PLATFORM -DOCR_TRACE_COMM_API -DOCR_TRACE_COMM_WORKER -DOCR_TRACE_COMP_TARGET -DOCR_TRACE_DATABLOCK -DOCR_TRACE_EVENT -DOCR_TRACE_GUID -DOCR_TRACE_INIPARSING -DOCR_TRACE_MACHINE -DOCR_TRACE_MEM_PLATFORM -DOCR_TRACE_MEM_TARGET -DOCR_TRACE_POLICY -DOCR_TRACE_SCHEDULER -DOCR_TRACE_SCHEDULER_HEURISTIC -DOCR_TRACE_SCHEDULER_OBJECT -DOCR_TRACE_STATS -DOCR_TRACE_SYNC -DOCR_TRACE_SYSBOOT -DOCR_TRACE_TASK -DOCR_TRACE_UTIL -DOCR_TRACE_WORKER -DOCR_TRACE_WORKPILE   -O2 -MMD -c <src> -o <obj>'[0m
+make[1]: Entering directory '/home/luke/senior_project/xstack/ocr/build/x86'
+[32m>>>> Compile command for .c files is[1;30m 'gcc -I . -I /home/luke/senior_project/xstack/ocr/inc -I /home/luke/senior_project/xstack/ocr/src -I /home/luke/senior_project/xstack/ocr/src/inc -g -Wall  -DOCR_DEBUG -DOCR_DEBUG_LVL=DEBUG_LVL_WARN -DOCR_DEBUG_API -DOCR_DEBUG_ALLOCATOR -DDEBUG_LVL_ALLOCATOR=DEBUG_LVL_WARN -DOCR_DEBUG_COMP_PLATFORM -DOCR_DEBUG_COMM_PLATFORM -DOCR_DEBUG_COMM_API -DOCR_DEBUG_COMM_WORKER -DOCR_DEBUG_COMP_TARGET -DOCR_DEBUG_DATABLOCK -DOCR_DEBUG_EVENT -DOCR_DEBUG_GUID -DOCR_DEBUG_INIPARSING -DOCR_DEBUG_MACHINE -DOCR_DEBUG_MEM_PLATFORM -DOCR_DEBUG_MEM_TARGET -DOCR_DEBUG_POLICY  -DOCR_DEBUG_SAL -DOCR_DEBUG_SCHEDULER -DOCR_DEBUG_SCHEDULER_HEURISTIC -DOCR_DEBUG_SCHEDULER_OBJECT -DOCR_DEBUG_STATS  -DOCR_DEBUG_SYNC -DOCR_DEBUG_SYSBOOT -DOCR_DEBUG_TASK -DOCR_DEBUG_UTIL -DDEBUG_LVL_UTIL=DEBUG_LVL_WARN -DOCR_DEBUG_WORKER -DOCR_DEBUG_WORKPILE -DOCR_TRACE_API -DOCR_TRACE_ALLOCATOR -DOCR_TRACE_COMP_PLATFORM -DOCR_TRACE_COMM_PLATFORM -DOCR_TRACE_COMM_API -DOCR_TRACE_COMM_WORKER -DOCR_TRACE_COMP_TARGET -DOCR_TRACE_DATABLOCK -DOCR_TRACE_EVENT -DOCR_TRACE_GUID -DOCR_TRACE_INIPARSING -DOCR_TRACE_MACHINE -DOCR_TRACE_MEM_PLATFORM -DOCR_TRACE_MEM_TARGET -DOCR_TRACE_POLICY -DOCR_TRACE_SCHEDULER -DOCR_TRACE_SCHEDULER_HEURISTIC -DOCR_TRACE_SCHEDULER_OBJECT -DOCR_TRACE_STATS -DOCR_TRACE_SYNC -DOCR_TRACE_SYSBOOT -DOCR_TRACE_TASK -DOCR_TRACE_UTIL -DOCR_TRACE_WORKER -DOCR_TRACE_WORKPILE   -O2 -MMD -c <src> -o <obj>'[0m
 [32m>>>> Building a static library with[1;30m 'ar cru'[0m
-[32m>>>> Compile command for .c files is[1;30m 'gcc -I . -I /home/luke/Desktop/senior_design/xstack/ocr/inc -I /home/luke/Desktop/senior_design/xstack/ocr/src -I /home/luke/Desktop/senior_design/xstack/ocr/src/inc -g -Wall  -DOCR_DEBUG -DOCR_DEBUG_LVL=DEBUG_LVL_WARN -DOCR_DEBUG_API -DOCR_DEBUG_ALLOCATOR -DDEBUG_LVL_ALLOCATOR=DEBUG_LVL_WARN -DOCR_DEBUG_COMP_PLATFORM -DOCR_DEBUG_COMM_PLATFORM -DOCR_DEBUG_COMM_API -DOCR_DEBUG_COMM_WORKER -DOCR_DEBUG_COMP_TARGET -DOCR_DEBUG_DATABLOCK -DOCR_DEBUG_EVENT -DOCR_DEBUG_GUID -DOCR_DEBUG_INIPARSING -DOCR_DEBUG_MACHINE -DOCR_DEBUG_MEM_PLATFORM -DOCR_DEBUG_MEM_TARGET -DOCR_DEBUG_POLICY  -DOCR_DEBUG_SAL -DOCR_DEBUG_SCHEDULER -DOCR_DEBUG_SCHEDULER_HEURISTIC -DOCR_DEBUG_SCHEDULER_OBJECT -DOCR_DEBUG_STATS  -DOCR_DEBUG_SYNC -DOCR_DEBUG_SYSBOOT -DOCR_DEBUG_TASK -DOCR_DEBUG_UTIL -DDEBUG_LVL_UTIL=DEBUG_LVL_WARN -DOCR_DEBUG_WORKER -DOCR_DEBUG_WORKPILE -DOCR_TRACE_API -DOCR_TRACE_ALLOCATOR -DOCR_TRACE_COMP_PLATFORM -DOCR_TRACE_COMM_PLATFORM -DOCR_TRACE_COMM_API -DOCR_TRACE_COMM_WORKER -DOCR_TRACE_COMP_TARGET -DOCR_TRACE_DATABLOCK -DOCR_TRACE_EVENT -DOCR_TRACE_GUID -DOCR_TRACE_INIPARSING -DOCR_TRACE_MACHINE -DOCR_TRACE_MEM_PLATFORM -DOCR_TRACE_MEM_TARGET -DOCR_TRACE_POLICY -DOCR_TRACE_SCHEDULER -DOCR_TRACE_SCHEDULER_HEURISTIC -DOCR_TRACE_SCHEDULER_OBJECT -DOCR_TRACE_STATS -DOCR_TRACE_SYNC -DOCR_TRACE_SYSBOOT -DOCR_TRACE_TASK -DOCR_TRACE_UTIL -DOCR_TRACE_WORKER -DOCR_TRACE_WORKPILE  -fpic -O2 -MMD -c <src> -o <obj>'[0m
+[32m>>>> Compile command for .c files is[1;30m 'gcc -I . -I /home/luke/senior_project/xstack/ocr/inc -I /home/luke/senior_project/xstack/ocr/src -I /home/luke/senior_project/xstack/ocr/src/inc -g -Wall  -DOCR_DEBUG -DOCR_DEBUG_LVL=DEBUG_LVL_WARN -DOCR_DEBUG_API -DOCR_DEBUG_ALLOCATOR -DDEBUG_LVL_ALLOCATOR=DEBUG_LVL_WARN -DOCR_DEBUG_COMP_PLATFORM -DOCR_DEBUG_COMM_PLATFORM -DOCR_DEBUG_COMM_API -DOCR_DEBUG_COMM_WORKER -DOCR_DEBUG_COMP_TARGET -DOCR_DEBUG_DATABLOCK -DOCR_DEBUG_EVENT -DOCR_DEBUG_GUID -DOCR_DEBUG_INIPARSING -DOCR_DEBUG_MACHINE -DOCR_DEBUG_MEM_PLATFORM -DOCR_DEBUG_MEM_TARGET -DOCR_DEBUG_POLICY  -DOCR_DEBUG_SAL -DOCR_DEBUG_SCHEDULER -DOCR_DEBUG_SCHEDULER_HEURISTIC -DOCR_DEBUG_SCHEDULER_OBJECT -DOCR_DEBUG_STATS  -DOCR_DEBUG_SYNC -DOCR_DEBUG_SYSBOOT -DOCR_DEBUG_TASK -DOCR_DEBUG_UTIL -DDEBUG_LVL_UTIL=DEBUG_LVL_WARN -DOCR_DEBUG_WORKER -DOCR_DEBUG_WORKPILE -DOCR_TRACE_API -DOCR_TRACE_ALLOCATOR -DOCR_TRACE_COMP_PLATFORM -DOCR_TRACE_COMM_PLATFORM -DOCR_TRACE_COMM_API -DOCR_TRACE_COMM_WORKER -DOCR_TRACE_COMP_TARGET -DOCR_TRACE_DATABLOCK -DOCR_TRACE_EVENT -DOCR_TRACE_GUID -DOCR_TRACE_INIPARSING -DOCR_TRACE_MACHINE -DOCR_TRACE_MEM_PLATFORM -DOCR_TRACE_MEM_TARGET -DOCR_TRACE_POLICY -DOCR_TRACE_SCHEDULER -DOCR_TRACE_SCHEDULER_HEURISTIC -DOCR_TRACE_SCHEDULER_OBJECT -DOCR_TRACE_STATS -DOCR_TRACE_SYNC -DOCR_TRACE_SYSBOOT -DOCR_TRACE_TASK -DOCR_TRACE_UTIL -DOCR_TRACE_WORKER -DOCR_TRACE_WORKPILE  -fpic -O2 -MMD -c <src> -o <obj>'[0m
 [32m>>>> Building a shared library with[1;30m 'gcc -shared -fpic -lpthread -lrt'[0m
-[32m Installed ' /home/luke/Desktop/senior_design/xstack/ocr/build/x86/libocr.a /home/luke/Desktop/senior_design/xstack/ocr/build/x86/libocr.so ocrrun' into '/home/luke/Desktop/senior_design/xstack/ocr/install/x86'[0m
-make[1]: Leaving directory '/home/luke/Desktop/senior_design/xstack/ocr/build/x86'
-Installing from /home/luke/Desktop/senior_design/xstack/ocr/examples/fib/build/x86 into /home/luke/Desktop/senior_design/xstack/ocr/examples/fib/install/x86...
+[32m Installed ' /home/luke/senior_project/xstack/ocr/build/x86/libocr.a /home/luke/senior_project/xstack/ocr/build/x86/libocr.so ocrrun' into '/home/luke/senior_project/xstack/ocr/install/x86'[0m
+make[1]: Leaving directory '/home/luke/senior_project/xstack/ocr/build/x86'
+mkdir -p /home/luke/senior_project/xstack/ocr/examples/fib/build/x86
+mkdir -p /home/luke/senior_project/xstack/ocr/examples/fib/build/x86
+gcc -Werror -I. -I/home/luke/senior_project/xstack/ocr/install/x86/include -I /home/luke/senior_project/xstack/apps/libs/x86/include -I /home/luke/senior_project/xstack/ocr/examples/fib/include  -O2 -c -o /home/luke/senior_project/xstack/ocr/examples/fib/build/x86/fib.o /home/luke/senior_project/xstack/ocr/examples/fib/fib.c
+gcc -o /home/luke/senior_project/xstack/ocr/examples/fib/build/x86/fib.dbg /home/luke/senior_project/xstack/ocr/examples/fib/build/x86/fib.o -L /home/luke/senior_project/xstack/ocr/install/x86/lib -L /home/luke/senior_project/xstack/apps/libs/x86/lib -locr -lpthread
+mkdir -p /home/luke/senior_project/xstack/ocr/examples/fib/install/x86
+Installing from /home/luke/senior_project/xstack/ocr/examples/fib/build/x86 into /home/luke/senior_project/xstack/ocr/examples/fib/install/x86...
 
 ####
 To run, use 'OCR_TYPE=x86 make run <args>' or, manually (in bash):
-export OCR_INSTALL=/home/luke/Desktop/senior_design/xstack/ocr/install/x86 && export LD_LIBRARY_PATH=/home/luke/Desktop/senior_design/xstack/ocr/install/x86/lib && export OCR_CONFIG=/home/luke/Desktop/senior_design/xstack/ocr/install/x86/config/default.cfg (default one) and run the executable fib in /home/luke/Desktop/senior_design/xstack/ocr/examples/fib/install/x86
+export OCR_INSTALL=/home/luke/senior_project/xstack/ocr/install/x86 && export LD_LIBRARY_PATH=/home/luke/senior_project/xstack/ocr/install/x86/lib && export OCR_CONFIG=/home/luke/senior_project/xstack/ocr/install/x86/config/default.cfg (default one) and run the executable fib in /home/luke/senior_project/xstack/ocr/examples/fib/install/x86
 ####
-/home/luke/Desktop/senior_design/xstack/ocr/scripts/Configs/config-generator.py --remove-destination --threads 4 --output /home/luke/Desktop/senior_design/xstack/ocr/examples/fib/install/x86/generated.cfg 
-LD_LIBRARY_PATH=/home/luke/Desktop/senior_design/xstack/ocr/install/x86/lib:/home/luke/Desktop/senior_design/xstack/apps/libs/x86 OCR_CONFIG=/home/luke/Desktop/senior_design/xstack/ocr/examples/fib/install/x86/generated.cfg \
-bash -c 'cd /home/luke/Desktop/senior_design/xstack/ocr/examples/fib/install/x86 &&  ./fib 5 '
+/home/luke/senior_project/xstack/ocr/scripts/Configs/config-generator.py --remove-destination --threads 4 --output /home/luke/senior_project/xstack/ocr/examples/fib/install/x86/generated.cfg 
+LD_LIBRARY_PATH=/home/luke/senior_project/xstack/ocr/install/x86/lib:/home/luke/senior_project/xstack/apps/libs/x86 OCR_CONFIG=/home/luke/senior_project/xstack/ocr/examples/fib/install/x86/generated.cfg \
+bash -c 'cd /home/luke/senior_project/xstack/ocr/examples/fib/install/x86 &&  ./fib 5 '
+Warning  4 ; outside the range of:  [1]
 Starting mainEdt
-Created template and got GUID 0x7f3cc80008c8
-Created ABS EDT and got  GUID 0x7f3cc8000948
+Created template and got GUID 0x8623c8
+Created ABS EDT and got  GUID 0x862568
 Before 1st DB create
-DbCreate: 3151 0x7f3ccec92b08 0x7f3ccec92b10 4 0x0
+DbCreate: 10102 0x862688 0x7fff52653c20 4 0x0
 Got DB created
 Starting fibEdt(5)
 In fibEdt(5) -- spawning children
-In fibEdt(5) -- spawned complete EDT GUID 0x1970568
-DbCreate: 3218 0x7ffccad874e0 0x7ffccad87498 4 0x0
-In fibEdt(5) -- created arg DB GUID 0x1970808
-In fibEdt(5) -- spawned first sub-part EDT GUID 0x1970918
+In fibEdt(5) -- spawned complete EDT GUID 0x862968
+DbCreate: 10115 0x862c08 0x7fff52653be8 4 0x0
+In fibEdt(5) -- created arg DB GUID 0x862c08
+In fibEdt(5) -- spawned first sub-part EDT GUID 0x8685f8
+DbCreate: 10119 0x868718 0x7fff52653be8 4 0x0
+In fibEdt(5) -- created arg DB GUID 0x868718
+In fibEdt(5) -- spawned first sub-part EDT GUID 0x8687c8
+Returning from fibEdt(5)
+Starting fibEdt(3)
+In fibEdt(3) -- spawning children
+In fibEdt(3) -- spawned complete EDT GUID 0x8688e8
+DbCreate: 10127 0x868b88 0x7fff52653be8 4 0x0
+In fibEdt(3) -- created arg DB GUID 0x868b88
+In fibEdt(3) -- spawned first sub-part EDT GUID 0x868c38
+DbCreate: 10131 0x868d58 0x7fff52653be8 4 0x0
+In fibEdt(3) -- created arg DB GUID 0x868d58
+In fibEdt(3) -- spawned first sub-part EDT GUID 0x868e08
+Returning from fibEdt(3)
+Starting fibEdt(1)
+In fibEdt(1) -- done (sat 868ad8)
+Starting fibEdt(2)
+In fibEdt(2) -- spawning children
+In fibEdt(2) -- spawned complete EDT GUID 0x868f28
+DbCreate: 10145 0x869118 0x7fff52653be8 4 0x0
+In fibEdt(2) -- created arg DB GUID 0x869118
+In fibEdt(2) -- spawned first sub-part EDT GUID 0x8691c8
+DbCreate: 10148 0x8692e8 0x7fff52653be8 4 0x0
+In fibEdt(2) -- created arg DB GUID 0x8692e8
+In fibEdt(2) -- spawned first sub-part EDT GUID 0x869398
+Returning from fibEdt(2)
+Starting fibEdt(0)
+In fibEdt(0) -- done (sat 869068)
+Starting fibEdt(1)
+In fibEdt(1) -- done (sat 868ad8)
+Done with 2 (1 + 0)
+DbDestroy: 10161 0x869118
+DbDestroy: 10162 0x8692e8
+Done with 3 (1 + 1)
+DbDestroy: 10165 0x868b88
+DbDestroy: 10166 0x868d58
 Starting fibEdt(4)
 In fibEdt(4) -- spawning children
-DbCreate: 3248 0x7ffccad874e8 0x7ffccad87498 4 0x0
-In fibEdt(4) -- spawned complete EDT GUID 0x7f3cc8000d98
-In fibEdt(5) -- created arg DB GUID 0x1970a38
-In fibEdt(5) -- spawned first sub-part EDT GUID 0x1970ae8
-Returning from fibEdt(5)
-DbCreate: 3274 0x7f3ccec92b10 0x7f3ccec92ac8 4 0x0
-Starting fibEdt(3)
-In fibEdt(3) -- spawning children
-In fibEdt(4) -- created arg DB GUID 0x7f3cc8001058
-Starting fibEdt(3)
-In fibEdt(4) -- spawned first sub-part EDT GUID 0x7f3cc8001108
-In fibEdt(3) -- spawning children
-In fibEdt(3) -- spawned complete EDT GUID 0x19765f8
-DbCreate: 3321 0x7f3ccec92b18 0x7f3ccec92ac8 4 0x0
-In fibEdt(4) -- created arg DB GUID 0x7f3cc8001248
-In fibEdt(4) -- spawned first sub-part EDT GUID 0x7f3cc80012f8
+In fibEdt(4) -- spawned complete EDT GUID 0x869068
+DbCreate: 10171 0x868d58 0x7fff52653be8 4 0x0
+In fibEdt(4) -- created arg DB GUID 0x868d58
+In fibEdt(4) -- spawned first sub-part EDT GUID 0x8694b8
+DbCreate: 10175 0x862b58 0x7fff52653be8 4 0x0
+In fibEdt(4) -- created arg DB GUID 0x862b58
+In fibEdt(4) -- spawned first sub-part EDT GUID 0x8695d8
 Returning from fibEdt(4)
-DbCreate: 3334 0x7ffccad874e0 0x7ffccad87498 4 0x0
-In fibEdt(3) -- created arg DB GUID 0x19767e8
-Starting fibEdt(2)
-In fibEdt(3) -- spawned complete EDT GUID 0x7f3cc0000948
-In fibEdt(2) -- spawning children
-In fibEdt(3) -- spawned first sub-part EDT GUID 0x1976898
-In fibEdt(2) -- spawned complete EDT GUID 0x7f3cc8001448
-DbCreate: 3353 0x7ffccad874e8 0x7ffccad87498 4 0x0
-In fibEdt(3) -- created arg DB GUID 0x19769b8
-In fibEdt(3) -- spawned first sub-part EDT GUID 0x1976a68
-Returning from fibEdt(3)
-DbCreate: 3364 0x7f3ccec92b10 0x7f3ccec92ac8 4 0x0
-In fibEdt(2) -- created arg DB GUID 0x7f3cc8001708
-Starting fibEdt(1)
-In fibEdt(1) -- done (sat 1976738)
-In fibEdt(2) -- spawned first sub-part EDT GUID 0x7f3cc80017b8
-DbCreate: 3372 0x7f3cce491b10 0x7f3cce491ac8 4 0x0
-In fibEdt(3) -- created arg DB GUID 0x7f3cc0000c08
 Starting fibEdt(2)
 In fibEdt(2) -- spawning children
-DbCreate: 3385 0x7f3ccec92b18 0x7f3ccec92ac8 4 0x0
-In fibEdt(2) -- spawned complete EDT GUID 0x1976b88
-In fibEdt(2) -- created arg DB GUID 0x7f3cc80018f8
-In fibEdt(3) -- spawned first sub-part EDT GUID 0x7f3cc0000d18
-In fibEdt(2) -- spawned first sub-part EDT GUID 0x7f3cc80019a8
-Returning from fibEdt(2)
-DbCreate: 3403 0x7ffccad874e0 0x7ffccad87498 4 0x0
-Starting fibEdt(0)
-In fibEdt(2) -- created arg DB GUID 0x1976d78
-In fibEdt(0) -- done (sat 7f3cc8001638)
-DbCreate: 3407 0x7f3cce491b18 0x7f3cce491ac8 4 0x0
-In fibEdt(3) -- created arg DB GUID 0x7f3cc0000e88
-In fibEdt(2) -- spawned first sub-part EDT GUID 0x1976e28
-Starting fibEdt(1)
-In fibEdt(1) -- done (sat 7f3cc8001588)
-DbCreate: 3423 0x7ffccad874e8 0x7ffccad87498 4 0x0
-In fibEdt(2) -- created arg DB GUID 0x1976f48
-In fibEdt(3) -- spawned first sub-part EDT GUID 0x7f3cc0000f38
-Returning from fibEdt(3)
-Done with 2 (1 + 0)
-Starting fibEdt(1)
-In fibEdt(1) -- done (sat 7f3cc0000b38)
-In fibEdt(2) -- spawned first sub-part EDT GUID 0x1976ff8
+In fibEdt(2) -- spawned complete EDT GUID 0x8696f8
+DbCreate: 10182 0x8698e8 0x7fff52653be8 4 0x0
+In fibEdt(2) -- created arg DB GUID 0x8698e8
+In fibEdt(2) -- spawned first sub-part EDT GUID 0x869998
+DbCreate: 10186 0x869ab8 0x7fff52653be8 4 0x0
+In fibEdt(2) -- created arg DB GUID 0x869ab8
+In fibEdt(2) -- spawned first sub-part EDT GUID 0x869b68
 Returning from fibEdt(2)
 Starting fibEdt(0)
-DbDestroy: 3448 0x7f3cc8001708
-Starting fibEdt(2)
-In fibEdt(0) -- done (sat 1976cc8)
-In fibEdt(2) -- spawning children
+In fibEdt(0) -- done (sat 869838)
 Starting fibEdt(1)
-DbDestroy: 3458 0x7f3cc80018f8
-In fibEdt(2) -- spawned complete EDT GUID 0x7f3cc0001088
-In fibEdt(1) -- done (sat 1976738)
+In fibEdt(1) -- done (sat 868b28)
 Done with 2 (1 + 0)
-DbCreate: 3477 0x7f3cce491b10 0x7f3cce491ac8 4 0x0
-DbDestroy: 3479 0x1976d78
-In fibEdt(2) -- created arg DB GUID 0x7f3cc0001298
-DbDestroy: 3488 0x1976f48
-In fibEdt(2) -- spawned first sub-part EDT GUID 0x7f3cc0001348
+DbDestroy: 10194 0x8698e8
+DbDestroy: 10195 0x869ab8
+Starting fibEdt(3)
+In fibEdt(3) -- spawning children
+In fibEdt(3) -- spawned complete EDT GUID 0x869838
+DbCreate: 10200 0x868b28 0x7fff52653be8 4 0x0
+In fibEdt(3) -- created arg DB GUID 0x868b28
+In fibEdt(3) -- spawned first sub-part EDT GUID 0x869c88
+DbCreate: 10204 0x869da8 0x7fff52653be8 4 0x0
+In fibEdt(3) -- created arg DB GUID 0x869da8
+In fibEdt(3) -- spawned first sub-part EDT GUID 0x869e58
+Returning from fibEdt(3)
 Starting fibEdt(1)
-In fibEdt(1) -- done (sat 7f3cc0000b38)
+In fibEdt(1) -- done (sat 868a28)
+Starting fibEdt(2)
+In fibEdt(2) -- spawning children
+In fibEdt(2) -- spawned complete EDT GUID 0x869f78
+DbCreate: 10214 0x86a168 0x7fff52653be8 4 0x0
+In fibEdt(2) -- created arg DB GUID 0x86a168
+In fibEdt(2) -- spawned first sub-part EDT GUID 0x86a218
+DbCreate: 10218 0x86a338 0x7fff52653be8 4 0x0
+In fibEdt(2) -- created arg DB GUID 0x86a338
+In fibEdt(2) -- spawned first sub-part EDT GUID 0x86a3e8
+Returning from fibEdt(2)
+Starting fibEdt(0)
+In fibEdt(0) -- done (sat 86a0b8)
+Starting fibEdt(1)
+In fibEdt(1) -- done (sat 868a28)
+Done with 2 (1 + 0)
+DbDestroy: 10226 0x86a168
+DbDestroy: 10227 0x86a338
 Done with 3 (1 + 1)
-DbCreate: 3500 0x7f3cce491b18 0x7f3cce491ac8 4 0x0
-In fibEdt(2) -- created arg DB GUID 0x7f3cc0001488
-DbDestroy: 3505 0x19767e8
-DbDestroy: 3512 0x19769b8
-Starting fibEdt(0)
-In fibEdt(2) -- spawned first sub-part EDT GUID 0x7f3cc0001538
-Returning from fibEdt(2)
-In fibEdt(0) -- done (sat 7f3cc00011c8)
+DbDestroy: 10230 0x868b28
+DbDestroy: 10231 0x869da8
 Done with 4 (2 + 1)
-Done with 2 (1 + 0)
-DbDestroy: 3527 0x7f3cc8001058
-DbDestroy: 3692 0x7f3cc0001298
-DbDestroy: 3701 0x7f3cc0001488
-DbDestroy: 3710 0x7f3cc8001248
-Done with 3 (1 + 1)
-DbDestroy: 3724 0x7f3cc0000c08
-DbDestroy: 3732 0x7f3cc0000e88
+DbDestroy: 10234 0x868d58
+DbDestroy: 10235 0x862b58
 Done with 5 (3 + 2)
-DbDestroy: 3750 0x1970808
-DbDestroy: 3757 0x1970a38
-PASSED @ '/home/luke/Desktop/senior_design/xstack/ocr/examples/fib/fib.c:119' Totally done: answer is 5
-DbDestroy: 3774 0x7f3cc8000a88
+DbDestroy: 10238 0x862c08
+DbDestroy: 10238 0x868718
+PASSED @ '/home/luke/senior_project/xstack/ocr/examples/fib/fib.c:119' Totally done: answer is 5
+DbDestroy: 10267 0x862688

@@ -7,7 +7,7 @@ DbCreate_pattern = re.compile(r"(ocrDbCreate\(([^;]+),([^;]+),([^;]+),([^;]+),([
 #This string is what replaces an ocrDbCreate() match.
 #It is composed of the function itself, followed by a comment to identify that the following is automatically modified
 #followed by a PRINTF statement of clock() and all the important arguments of the function
-DbCreate_substr = "\\1/*Auto-Generated Print:*/PRINTF(\"DbCreate: %ld %p %p %lu %#x\\\\n\",clock(),\\2,\\3,\\4,\\5);"
+DbCreate_substr = "\\1/*Auto-Generated Print:*/PRINTF(\"DbCreate: %ld %p %p %lu %#x\\\\n\",clock(),*(\\2),\\3,\\4,\\5);"
 
 #Same for ocrDbDestroy()
 DbDestroy_pattern = re.compile(r"(ocrDbDestroy\(([^;]+)\)[^ \t\n\r\f\v]*;)(?!\/\*Auto-Generated Print:\*\/)",re.MULTILINE)
