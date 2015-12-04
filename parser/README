@@ -1,0 +1,6 @@
+This program takes the results of an OCR program that has been modified by the add_prints.py script.
+The results are entered in the following syntax
+	$ ./Parser <filename>
+To compile the parser, just type "make"
+The program will create PNG files of charts it has created and output
+all recorded data to the terminal.
