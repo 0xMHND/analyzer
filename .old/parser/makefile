@@ -14,4 +14,4 @@ debug: new.c
 	${CXX} ${CFLAGS} ${SOURCE} ${HEADER} -o ${TARGET} -DEBUG -lm
 
 clean:
-	rm -f ${TARGET} *.o
+	rm -f ${TARGET} *.o *.png *.dat
