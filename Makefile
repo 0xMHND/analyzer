@@ -1,7 +1,7 @@
 CXX=gcc
 CFLAGS=-Wall -O3 -g -std=c99
-SOURCE=datablock_parser.c
-HEADER=
+SOURCE=main.c
+HEADER=main.h
 TARGET=Prog
 
 default: compile
