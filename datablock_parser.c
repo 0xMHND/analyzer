@@ -4,7 +4,7 @@
 
 void datablock_parser(struct block_info * blocks, char * filename)
 {
-	int instr_count = 0;
+	int count = 0;
 	FILE * f;
 	char buf[BUF_SIZE];
 	char * func_name;
@@ -30,31 +30,34 @@ void datablock_parser(struct block_info * blocks, char * filename)
 
 		func_name = strtok(NULL, " /|\n\t\r\\");
 
-//		if ((temp = strtok(NULL, " /|\n\t\r\\")) != NULL) {
-//			instr_count += atoi(temp);
-//		}
-//		printf("level: %d\n", level);
-
 		if (!strcmp(func_name, "returned.")) {
-			instr_count += atoi(strtok(NULL, " /|\n\t\r\\"));
+			count += atoi(strtok(NULL, " /|\n\t\r\\"));
 		}	
 		else if (!strcmp(func_name, "ocrDbCreate()")) {
 
 			if (blocks->c_count >= blocks->size) {
+				blocks->create  = realloc(blocks->create , blocks->size * 2 * sizeof(struct dbc));
+				blocks->destroy = realloc(blocks->destroy, blocks->size * 2 * sizeof(struct dbd));
+				for (int i = blocks->size; i < blocks->size * 2; i++) {
+					dbc_init(blocks->create[i] );
+					dbd_init(blocks->destroy[i]);
+				} 
 				blocks->size *= 2;
-				blocks->create  = realloc(blocks->create , blocks->size*sizeof(long));
-				blocks->destroy = realloc(blocks->destroy, blocks->size*sizeof(long));
 			}
-			blocks->create[blocks->c_count] = instr_count;
+			blocks->create[blocks->c_count].instr_count = count;
 			blocks->c_count++;
 		}
 		else if (!strcmp(func_name, "ocrDbDestroy()")) {
 			if (blocks->d_count >= blocks->size) {
+				blocks->create  = realloc(blocks->create , blocks->size * 2 * sizeof(struct dbc));
+				blocks->destroy = realloc(blocks->destroy, blocks->size * 2 * sizeof(struct dbd));
+				for (int i = blocks->size; i < blocks->size * 2; i++) {
+					dbc_init(blocks->create[i] );
+					dbd_init(blocks->destroy[i]);
+				} 
 				blocks->size *= 2;
-				blocks->create  = realloc(blocks->create , blocks->size*sizeof(long));
-				blocks->destroy = realloc(blocks->destroy, blocks->size*sizeof(long));
 			}
-			blocks->destroy[blocks->d_count] = instr_count;
+			blocks->destroy[blocks->d_count].instr_count = count;
 			blocks->d_count++;
 		}
 	}
