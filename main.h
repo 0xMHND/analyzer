@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <time.h>
+#include <errno.h>
 
 #define BUF_SIZE 256
 
