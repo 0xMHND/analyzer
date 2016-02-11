@@ -6,11 +6,18 @@ TARGET=Prog
 
 default: compile
 
+diff:
+	${CXX} ${CFLAGS} differential.c -o differential -lm
+	
+
 compile:
 	${CXX} ${CFLAGS} ${SOURCE} ${HEADER} -o ${TARGET} -lm
 
 debug:
 	${CXX} ${CFLAGS} ${SOURCE} ${HEADER} -o ${TARGET} -DEBUG -lm
 
+rmlogs:
+	rm -rf ./logs/*
+
 clean:
-	rm -f ${TARGET} *.o *.png *.dat
+	rm -f ${TARGET} differential *.o *.png *.dat

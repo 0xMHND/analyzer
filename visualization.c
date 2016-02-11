@@ -42,17 +42,20 @@ int plot_data(uint64_t * xvals, uint64_t * yvals, int size)
 
 	//This loops goes through every line of the config file
 	//and feeds them into GNUplot
-	while (!feof(cfg)) {
-		memset(buf, '\0', BUF_SIZE);
+	for (int i = 0; !feof(cfg); i++) {
+		memset(buf, '\0', BUF_SIZE); 	//clear buffer
 
-		if (fgets(buf, BUF_SIZE, cfg) == NULL) {
-			fprintf(stderr, "Could not read line in file %s", CONFIG);
+		//get next line into the buffer
+		if (fgets(buf, BUF_SIZE, cfg) == NULL && !feof(cfg)) {
+			fprintf(stderr, "Could not read line %d in file %s", i, CONFIG);
 			return 1;
 		}
 
+		//if end of file is reached, break out of the loop
 		if (feof(cfg))
 			break;
 
+		//send command to GNUplot
 		fprintf(gnuplotPipe, "%s\n", buf);
 	}
 	fprintf(gnuplotPipe, "%s\n", "plot \'chart.dat\' ls 2");

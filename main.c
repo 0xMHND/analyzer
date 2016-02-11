@@ -4,9 +4,11 @@
 #include <string.h>
 
 #include "datablock_parser.c"
+#include "memory_analyzing.c"
 #include "visualization.c"
 #include "data_processing.c"
-
+#include "storage.c"
+#include "formatter.c"
 
 /***************************
  * input: 	struct to initialize
@@ -58,12 +60,21 @@ void block_info_init( struct block_info * blocks)
 int main(int argc, char ** argv)
 {
 	struct block_info blocks;
+	char buf[BUF_SIZE];
+	char * store_dir;
 
 	//exit if no filename is entered
 	//or multiple are entered
 	if ( argc != 2 ) {
 		printf("Usage: %s <filename>\n", argv[0]);
 		exit(1);
+	}
+
+	store_dir = next_folder();
+	snprintf(buf, BUF_SIZE, "cp %s %s", argv[1], store_dir);
+	if (system(buf) == -1) {
+		fprintf(stderr, "Could not copy \"%s\" into \"%s\": %s.\n", buf, store_dir, strerror(errno));
+		return 1;
 	}
 
 	block_info_init(&blocks);
@@ -79,7 +90,11 @@ int main(int argc, char ** argv)
 		printf(" %ld  ",blocks.destroy[i].instr_count);
 	printf("\n");
 
+// CAll for data_processing block
 	data_processing(&blocks);
+// CAll for memory_analyzing block
+	memory_leak(&blocks);
+	formatter_write((void *)&blocks, OCR_FUNCTIONS, store_dir);
 
 	return 0;
 }

@@ -4,7 +4,7 @@
 
 void datablock_parser(struct block_info * blocks, char * filename)
 {
-	int count = 0;
+	uint64_t count = 0, depth_level;
 	FILE * f;
 	char buf[BUF_SIZE];
 	char * func_name;
@@ -29,9 +29,9 @@ void datablock_parser(struct block_info * blocks, char * filename)
 		if (strtok( buf, " /|\n\t\r\\") == NULL)//start token parsing
 			break;
 
-		strtok(NULL, " /|\n\t\r\\");		//parse program counter
+		strtol(strtok(NULL, " /|\n\t\r\\"), NULL, 0);		//parse program counter
 
-		strtok(NULL, " /|\n\t\r\\");		//parse depth level
+		depth_level = strtol(strtok(NULL, " /|\n\t\r\\"), NULL, 10);		//parse depth level
 
 		func_name = strtok(NULL, " /|\n\t\r\\");	//parse function name
 
@@ -55,6 +55,7 @@ void datablock_parser(struct block_info * blocks, char * filename)
 			}
 
 			blocks->create[blocks->c_count].instr_count = count;
+			blocks->create[blocks->c_count].depth = depth_level;
 			blocks->c_count++;
 		}
 		//else if ocrDbDestroy() is located, record the number of instructions that have
@@ -73,6 +74,7 @@ void datablock_parser(struct block_info * blocks, char * filename)
 			}
 
 			blocks->destroy[blocks->d_count].instr_count = count;
+			blocks->destroy[blocks->d_count].depth = depth_level;
 			blocks->d_count++;
 		}
 	}
