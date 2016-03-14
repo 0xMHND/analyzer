@@ -49,7 +49,7 @@ char * next_folder ()
 		memset(buf, '\0', BUF_SIZE);
 		
 		if (snprintf(buf, BUF_SIZE, "%s%s", LOGS_PATH, dir_data->d_name) > BUF_SIZE) {
-			fprintf(stderr, "Warning Buffer overflow.\n", buf, strerror(errno));
+			fprintf(stderr, "Warning Buffer overflow %s: %s\n", buf, strerror(errno));
 		}		
 
 		if (stat(buf, &s) == -1) {
@@ -70,7 +70,7 @@ char * next_folder ()
 
 	memset(buf, '\0', BUF_SIZE);
 	if (snprintf(buf, BUF_SIZE, "%srun%03d%c", LOGS_PATH, run, '/') > BUF_SIZE) {
-		fprintf(stderr, "Buffer overflow: %s.\n", buf, strerror(errno));
+		fprintf(stderr, "Buffer overflow %s: %s.\n", buf, strerror(errno));
 	}
 		
 	if (mkdir(buf, 0777) == -1) {

@@ -36,9 +36,6 @@ int formatter_write( void * ptr, int type, char * path)
 			printf("Warning: Buffer size exceeded in formatter_write()\n");
 		if (fputs(buf, f) == EOF)
 			fprintf(stderr, "Could not put \"%s\" in %s: %s.\n", buf, full_path, strerror(errno));
-		
-		if (fclose(f) == EOF)
-			fprintf(stderr, "Could not close file pointer to %s: %s.\n", full_path, strerror(errno));
 
 		//write the array of creation times
 		for (int i = 0; i < blocks->c_count; i++) {
@@ -54,7 +51,10 @@ int formatter_write( void * ptr, int type, char * path)
 				printf("Warning: Buffer size exceeded in formatter_write()\n");
 			if (fputs(buf, f) == EOF)
 				fprintf(stderr, "Could not put \"%s\" in %s: %s.\n", buf, full_path, strerror(errno));
-		}
+		}		
+
+		if (fclose(f) == EOF)
+			fprintf(stderr, "Could not close file pointer to %s: %s.\n", full_path, strerror(errno));
 	}
 
 	//else, if it's processed data, ignore for now

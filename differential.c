@@ -52,7 +52,7 @@ char* get_dir_name(int num){
 	scanf("%s", dir);
 	//input 1 error handle
 	
-	if (snprintf(buf, BUF_SIZE, "%s%s", LOGS_PATH, dir) < BUF_SIZE){
+	if (snprintf(buf, BUF_SIZE, "%s%s", LOGS_PATH, dir) > BUF_SIZE){
 		fprintf(stderr, "snprintf: %s",strerror(errno));
 	}
 	if (access(buf, F_OK)!= -1)
@@ -72,7 +72,7 @@ char* get_file_name(int index, char* dir_name, int file_num){
 	//error check for open a dir
 	char buf[BUF_SIZE];
 
-	if (snprintf(buf, BUF_SIZE, "%s%s", LOGS_PATH, dir_name) < BUF_SIZE){
+	if (snprintf(buf, BUF_SIZE, "%s%s", LOGS_PATH, dir_name) > BUF_SIZE){
 		fprintf(stderr, "snprintf: %s",strerror(errno));
 	}
 
@@ -97,7 +97,7 @@ int get_file_num(char* dir_name){
 	struct dirent *dir;
 	char buf[BUF_SIZE];
 
-	if (snprintf(buf, BUF_SIZE, "%s%s", LOGS_PATH, dir_name) < BUF_SIZE){
+	if (snprintf(buf, BUF_SIZE, "%s%s", LOGS_PATH, dir_name) > BUF_SIZE){
 		fprintf(stderr, "snprintf: %s",strerror(errno));
 	}
 
@@ -140,7 +140,7 @@ int main(int argc, char ** argv){
 	dir2 = get_dir_name(2);
 	//open files
 	char *save_dir_name = get_save_dir_name(dir1, dir2);
-	if (snprintf(buffer, BUF_SIZE, "%s%s", LOGS_PATH, save_dir_name) < BUF_SIZE){
+	if (snprintf(buffer, BUF_SIZE, "%s%s", LOGS_PATH, save_dir_name) > BUF_SIZE){
 		fprintf(stderr, "snprintf: %s",strerror(errno));
 	}
 	if (mkdir(buffer, 0777)){
@@ -173,8 +173,8 @@ int main(int argc, char ** argv){
 		for (j = 0; j < file2_num; j++){
 			if (strcmp(file1_names[i],file2_names[j]) == 0){
 
-				if (snprintf(command, BUF_SIZE, "diff -u %s%s/%s %s%s/%s >> %s%s/%s.out", LOGS_PATH, dir1, file1_names[i], LOGS_PATH, dir2, file2_names[j], LOGS_PATH, save_dir_name, file1_names[i]) < BUF_SIZE){
-					fprintf(stderr, "snprintf: %s",strerror(errno));
+				if (snprintf(command, BUF_SIZE, "diff -u %s%s/%s %s%s/%s > %s%s/%s.out", LOGS_PATH, dir1, file1_names[i], LOGS_PATH, dir2, file2_names[j], LOGS_PATH, save_dir_name, file1_names[i]) > BUF_SIZE){
+					fprintf(stderr, "snprintf: %s\n",strerror(errno));
 				}
 
 				printf("dfgsnlkfds: %s\n", command);
