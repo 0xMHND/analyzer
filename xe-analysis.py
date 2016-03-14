@@ -17,11 +17,21 @@ import sys
 import getopt
 import subprocess
 
-#This function defines how to use the program.
+#/***************************
+ #* input:  none
+ #* output: none
+ #* description: This function defines how to use the program.
+#***************************/
 def usage():
     print 'Usage:', sys.argv[0], '[-d] [-p path] -b <xe-binary> -l <xe-log>'
 
-#The main function.
+#/***************************
+ #* input: none 
+ #* output: none
+ #* description: The main function. It goes through each line of a trace file and identifies
+ #* jumps and return instructions. With this and the symbols from another file, it determines
+ #* which OCR functions are called and in which order.
+#***************************/
 def main():
     # parse cmdline
     try:
@@ -69,6 +79,8 @@ def main():
     stats_inst = {}
     stats_count = {}
 
+	# This loop goes through the symbols file and matches
+	# each symbol address with the name it represents
     for l in syms.stdout:
         l = l.rstrip(os.linesep)
         w = l.split()
@@ -109,6 +121,10 @@ def main():
     count = 0
     counts = {-1:-1}
 
+	# This loop reads through a trace file and grabs each executed instruction name
+	# If the instruction represents a jump to a symbol address representing an OCR function
+	# Then the program writes that function name along with other information to an output file
+	# It also keeps track of returns to figure out when each OCR function call ends.
     for l in log.stdout:
         l = l.rstrip(os.linesep)
 
@@ -119,6 +135,9 @@ def main():
 
         addr = int(w.group('addr'), 16)
 
+		# After the addresss had been parsed in previous line
+		# Check to see if it matches any parsed symbols
+		# and if it does, write results to output
         for k in beg:
             if beg[k] <= addr and end[k] > addr:
                 offset = addr - beg[k]
@@ -142,25 +161,28 @@ def main():
                 if debug > 0:
                     continue
 
+	# print more information if in debug mode
+	# mainly number of calls and addresses used
     if debug > 0:
         print '    Addresses resolved:', counter
-    print ''
-    print '----- call count -----'
-    print ''
-#    d_view = [ (v,k) for k,v in stats_count.iteritems() ]
-#    d_view.sort(reverse=True) # natively sort tuples by first element
-#    for v,k in d_view:
-#        if (v != 0):
-#            print "%s: %d" % (k,v)
+	    print ''
+	    print '----- call count -----'
+	    print ''
+	    d_view = [ (v,k) for k,v in stats_count.iteritems() ]
+	    d_view.sort(reverse=True) # natively sort tuples by first element
+	    for v,k in d_view:
+	        if (v != 0):
+	            print "%s: %d" % (k,v)
 
-    print ''
-    print '----- instruction count (total) -----'
-    print ''
-#    d_view = [ (v,k) for k,v in stats_inst.iteritems() ]
-#    d_view.sort(reverse=True) # natively sort tuples by first element
-#    for v,k in d_view:
-#        if (v != 0):
-#            print "%s: %d" % (k,v)
+	    print ''
+	    print '----- instruction count (total) -----'
+	    print ''
+	    d_view = [ (v,k) for k,v in stats_inst.iteritems() ]
+	    d_view.sort(reverse=True) # natively sort tuples by first element
+	    for v,k in d_view:
+	        if (v != 0):
+	            print "%s: %d" % (k,v)
+# main end
 
 if __name__ == "__main__":
     main()

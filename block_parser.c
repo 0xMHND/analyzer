@@ -2,6 +2,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+/***************************
+ * input: 	a struct pointer that will contain parsed data
+ * 			a string containing the path to the file to be parsed
+ * output:	none
+ * description:	This function opens an OCR functions file and takes out
+ * 				all the function calls relating to memory usage and saves that data
+***************************/
 void datablock_parser(struct block_info * blocks, char * filename)
 {
 	uint64_t count = 0, depth_level;

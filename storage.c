@@ -2,6 +2,12 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+/***************************
+ * input: 	none
+ * output:	A string containing a path to the folder to save data to
+ * description:	This function looks into the logs directory and creates a new one if needed.
+ * 				Then, it determines what the folder name should be and returns the path to save to it.
+***************************/
 char * next_folder ()
 {
 	struct dirent * dir_data;

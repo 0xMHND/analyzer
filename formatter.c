@@ -4,6 +4,14 @@
 #define READ 0
 #define WRITE 1
 
+/***************************
+ * input: 	Pointer that contains all information to be written to a file
+ * 			An integer representing the type of the previously mentioned pointer
+ * 			A string containing the path to save data to
+ * output:	This function returns 0 on success
+ * description:	This function takes in different types of struct pointers in the first argument,
+ * 				and then extracts all information from those structs and writes that to a file.
+***************************/
 int formatter_write( void * ptr, int type, char * path)
 {
 	char buf[BUF_SIZE], full_path[BUF_SIZE];

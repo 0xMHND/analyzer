@@ -36,7 +36,9 @@ char *get_save_dir_name(char *dir1, char *dir2) {
 	//length of my dir name
 	char *name = malloc(BUF_SIZE * sizeof(char));
 	//format is compare.logs.dir1_and_dir2
-	sprintf(name, "diff-u_%s_%s", dir1, dir2);
+	if (snprintf(name, BUF_SIZE, "diff-u_%s_%s", dir1, dir2) > BUF_SIZE) {
+		fprintf(stderr, "snprintf: %s",strerror(errno));
+	}
 	return name;
 }
 
@@ -76,8 +78,12 @@ char* get_file_name(int index, char* dir_name, int file_num){
 		fprintf(stderr, "snprintf: %s",strerror(errno));
 	}
 
-	dp = opendir (buf);
+	if ((dp = opendir (buf)) == NULL) {
+		fprintf(stderr, "Could not open directory %s: %s", buf, strerror(errno));
+	}
+		
 	i = 0;
+	//This loop reads and saves all elements in the directory to an array
 	while ((dir = readdir (dp))!= NULL) {
 		if (strcmp(dir->d_name, ".") && strcmp(dir->d_name, "..")){
 				strcpy (name_array[i], dir->d_name);
@@ -102,7 +108,8 @@ int get_file_num(char* dir_name){
 	}
 
 	dp = opendir(buf);
-	//count the files
+
+	//count the files present in the directory
 	while ((dir = readdir (dp))!= NULL) {
 		if (strcmp(dir->d_name, ".") && strcmp(dir->d_name, "..")){
 			count++;	
@@ -143,8 +150,8 @@ int main(int argc, char ** argv){
 	if (snprintf(buffer, BUF_SIZE, "%s%s", LOGS_PATH, save_dir_name) > BUF_SIZE){
 		fprintf(stderr, "snprintf: %s",strerror(errno));
 	}
-	if (mkdir(buffer, 0777)){
-	//handle stuff
+	if (mkdir(buffer, 0777) == -1){
+		fprintf(stderr, "Could not create directory %s: %s.", buffer, strerror(errno));
 	}
 
 	if (VERBOSE == 1){
@@ -168,8 +175,11 @@ int main(int argc, char ** argv){
 	for (i = 0; i < file2_num; i++)
 		strcpy (file2_names[i], get_file_name(i, dir2, file2_num));
 
-	//loop to find the same names of files and compare them, 2 files and a time
+	//Loop through all files in first directory
 	for (i = 0; i < file1_num; i++){
+		//Loop though all files in second directory
+		//If two filenames are the same, compare them
+		//Otherwise keep looking
 		for (j = 0; j < file2_num; j++){
 			if (strcmp(file1_names[i],file2_names[j]) == 0){
 
@@ -177,7 +187,6 @@ int main(int argc, char ** argv){
 					fprintf(stderr, "snprintf: %s\n",strerror(errno));
 				}
 
-				printf("dfgsnlkfds: %s\n", command);
 				printf("Comparing: %s for %s and %s. Continue? (yes/no) ", file1_names[i], dir1, dir2);
 				scanf("%s", buffer);
 				if(!strcmp(buffer, "yes")){

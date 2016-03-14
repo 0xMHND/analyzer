@@ -55,7 +55,8 @@ void memory_usage(struct block_info * block)
 		}
 	}
 
-	plot_data(x_instr, y_size, ind);
+	if (plot_data(x_instr, y_size, ind) != 0)
+		printf("Error occurred while making output graph.\n");
 }
 
 // ************** Feature 1 : Data  block's lifetime ****************** // 

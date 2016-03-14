@@ -4,6 +4,13 @@
 //config filename
 #define CONFIG "visualization.cfg"
 
+/***************************
+ * input: 	x values to graph
+ * 			y values to graph
+ * output:	This function returns 0 on success
+ * description:	This function takes x and y values and creates
+ * 				a PNG image showing the graphical representation of that data
+***************************/
 int plot_data(uint64_t * xvals, uint64_t * yvals, int size)
 {
 	char buf[BUF_SIZE];
