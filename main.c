@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "datablock_parser.c"
+#include "block_parser.c"
 #include "memory_analyzing.c"
 #include "visualization.c"
 #include "data_processing.c"
@@ -20,7 +20,7 @@ void dbc_init (struct dbc create)
 	create.instr_count = -1;
 	create.dbid = -1;
 	create.addr = NULL;
-	create.len  = 4;
+	create.len  = DB_SIZE;
 	create.flags= 0;
 }
 
@@ -79,7 +79,9 @@ int main(int argc, char ** argv)
 
 	block_info_init(&blocks);
 	datablock_parser(&blocks, argv[1]);
+	formatter_write((void *)&blocks, OCR_FUNCTIONS, store_dir);
 
+/*
 	//printf statements for debugging
 	printf("ocrDbCreate :");
 	for (int i = 0; i < blocks.c_count; i++)
@@ -89,12 +91,15 @@ int main(int argc, char ** argv)
 	for (int i = 0; i < blocks.d_count; i++)
 		printf(" %ld  ",blocks.destroy[i].instr_count);
 	printf("\n");
+*/
 
 // CAll for data_processing block
 	data_processing(&blocks);
 // CAll for memory_analyzing block
 	memory_leak(&blocks);
-	formatter_write((void *)&blocks, OCR_FUNCTIONS, store_dir);
 
+	free(store_dir);
+	free(blocks.create );
+	free(blocks.destroy);
 	return 0;
 }

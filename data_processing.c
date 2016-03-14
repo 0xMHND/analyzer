@@ -17,34 +17,38 @@
 void memory_usage(struct block_info * block)
 {
 
-	uint64_t * x_instr = malloc((block->c_count + block->d_count) * sizeof(uint64_t) + 1);
-	uint64_t * y_size = malloc((block->c_count + block->d_count) * sizeof(uint64_t) + 1);
-	int ind=1;
-	int i=0;
-	int j=0;
-	x_instr[0] = 0;
-	y_size[0] = 0;
-	
+	uint64_t * x_instr = malloc((block->c_count + block->d_count) * sizeof(uint64_t));
+	uint64_t * y_size = malloc((block->c_count + block->d_count) * sizeof(uint64_t));
+	int ind = 1;
+
+	//Error handling for the number of calls for ocrDbCreate and ocrDbDestroy
+	if(block->c_count < 0)
+		printf("Error: the number of created blocks is negative.\n");
+	if(block->d_count < 0)
+		printf("Error: the number of destroyed blocks is negative.\n");
 	// This for loop checks the next instructoin and whether it is ocrDbCreate or ocrDbDestroy then adds that to the x-axis
 	// each time it does that it increments the y-axis if ocrDbCreate is called or decrements it if ocrDbDestroy is called
-	for(; ind < block->c_count + block->d_count+1; ind++)
+	x_instr[0] = block->create[0].instr_count;
+	y_size[0] = DB_SIZE;
+	for(int i = 1, j = 0; ind < block->c_count + block->d_count; ind++)
 	{
 		// case1 : if the number od ocrDbDestroy exceeds ocrDbCreate 
 		if ( j >= block->c_count )
 			break;
-		if ( block->destroy[i].instr_count == 0 )
-			j = block->d_count;
+		// case2 : ocrDbCreate is before ocrDbDestroy, Check the instruction count
 		if ( (block->create[i].instr_count <= block->destroy[j].instr_count || block->destroy[j].instr_count == 0) && i < block->c_count) {
 			x_instr[ind] = block->create[i].instr_count;
 			y_size[ind] = y_size[ind-1] + DB_SIZE;
 			i++;
 		}
-		else if ( i < block->d_count) {
+		// case3 : ocrDbDestroy is before ocrDbCreate, Check the instruction count
+		else if ( j < block->d_count) {
 			x_instr[ind] = block->destroy[j].instr_count;
 			y_size[ind] = y_size[ind-1] - DB_SIZE;
 			j++;
 		}
 	}
+
 	plot_data(x_instr, y_size, ind);
 }
 
@@ -58,11 +62,21 @@ void db_lifetime(struct block_info *block)
 {
 
 	int j=0;
+
+	//Error handling for the number of calls for ocrDbCreate and ocrDbDestroy
+	if(block->c_count < 0)
+		printf("Error: the number of created blocks is negative.\n");
+	if(block->d_count < 0)
+		printf("Error: the number of destroyed blocks is negative.\n");
+
+	// loop through ocrDbCreate and match them with their ocrDbDestroy and compute the difference of instructions count. 
 	for(int i=0;  i<block->c_count ;i++)
 	{
+		//The case where we have more ocrDbCreate than destroy
 		if(j>=block->d_count )
 		{
 			printf("Ran out of ocrDbDestroy\n");
+			//loop through the remaining and print "inf" lifetime
 			for(;i<block->c_count;i++)
 			{
 				printf("Block %d lifetime: inf. \n", i);

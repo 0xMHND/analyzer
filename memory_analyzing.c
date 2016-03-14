@@ -15,6 +15,9 @@ void memory_leak(struct block_info *block)
 	int ocrDbDestroy = block->d_count;
 	int diff = ocrDbCreate-ocrDbDestroy;
 	
+	// Error check: This check has no effect on the flow of this feature, rather it tells us something is strange happened in the program.
+	if(diff<0)
+		printf("Warning! the number of data blocks destroyed is larger than Created!\n");
 	// Error check: if no data blocs are created or the passed block struct is corrupt. 	
 	if(ocrDbCreate < 1)
 		printf("There are no data blocks created!\n");

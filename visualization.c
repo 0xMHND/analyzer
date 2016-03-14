@@ -17,6 +17,11 @@ int plot_data(uint64_t * xvals, uint64_t * yvals, int size)
 
 	//Write data to the data file
 	for (int i=0; i < size; i++) {
+		if (i > 0)
+			fprintf(temp, "%ld %ld\n", xvals[i], yvals[i-1]);
+		else if (i == 0)
+			fprintf(temp, "%ld 0\n", xvals[i]);
+
 		fprintf(temp, "%ld %ld\n", xvals[i], yvals[i]); //Write the data to a temporary file
 	}
 	fclose(temp);
@@ -39,6 +44,8 @@ int plot_data(uint64_t * xvals, uint64_t * yvals, int size)
 	fprintf(gnuplotPipe, "%s\n", "set terminal png truecolor");
 	//set output name
 	fprintf(gnuplotPipe, "%s\n", "set output \'image.png\'");
+	//set a slight offset from the top for aestetics
+	fprintf(gnuplotPipe, "%s\n", "set offset graph 0.1, graph 0.1, graph 0.1, graph 0");
 
 	//This loops goes through every line of the config file
 	//and feeds them into GNUplot

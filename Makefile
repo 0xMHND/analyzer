@@ -12,12 +12,14 @@ diff:
 
 compile:
 	${CXX} ${CFLAGS} ${SOURCE} ${HEADER} -o ${TARGET} -lm
+main2:
+	${CXX} ${CFLAGS} main2.c ${HEADER} -o ${TARGET} -lm
 
 debug:
 	${CXX} ${CFLAGS} ${SOURCE} ${HEADER} -o ${TARGET} -DEBUG -lm
 
 rmlogs:
-	rm -rf ./logs/*
+	rm -rf ./logs/
 
-clean:
+clean: rmlogs
 	rm -f ${TARGET} differential *.o *.png *.dat

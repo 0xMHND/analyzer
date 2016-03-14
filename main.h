@@ -8,6 +8,10 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <dirent.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <pwd.h>
+#include <unistd.h>//for access function
 
 #define LOGS_PATH "./logs/"
 #define BUF_SIZE 256
