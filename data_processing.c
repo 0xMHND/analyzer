@@ -23,9 +23,15 @@ void memory_usage(struct block_info * block)
 
 	//Error handling for the number of calls for ocrDbCreate and ocrDbDestroy
 	if(block->c_count < 0)
+	{
 		printf("Error: the number of created blocks is negative.\n");
+		exit(1);
+	}
 	if(block->d_count < 0)
+	{
 		printf("Error: the number of destroyed blocks is negative.\n");
+		exit(1);
+	}
 	// This for loop checks the next instructoin and whether it is ocrDbCreate or ocrDbDestroy then adds that to the x-axis
 	// each time it does that it increments the y-axis if ocrDbCreate is called or decrements it if ocrDbDestroy is called
 	x_instr[0] = block->create[0].instr_count;
@@ -65,9 +71,15 @@ void db_lifetime(struct block_info *block)
 
 	//Error handling for the number of calls for ocrDbCreate and ocrDbDestroy
 	if(block->c_count < 0)
+	{
 		printf("Error: the number of created blocks is negative.\n");
+		exit(1);
+	}
 	if(block->d_count < 0)
+	{
 		printf("Error: the number of destroyed blocks is negative.\n");
+		exit(1);
+	}
 
 	// loop through ocrDbCreate and match them with their ocrDbDestroy and compute the difference of instructions count. 
 	for(int i=0;  i<block->c_count ;i++)
