@@ -36,6 +36,7 @@ void memory_usage(struct block_info * block)
 	// each time it does that it increments the y-axis if ocrDbCreate is called or decrements it if ocrDbDestroy is called
 	x_instr[0] = block->create[0].instr_count;
 	y_size[0] = DB_SIZE;
+//TODO	y_size[0] = block->create[0].size;;
 	for(int i = 1, j = 0; ind < block->c_count + block->d_count; ind++)
 	{
 		// case1 : if the number od ocrDbDestroy exceeds ocrDbCreate 
@@ -45,12 +46,14 @@ void memory_usage(struct block_info * block)
 		if ( (block->create[i].instr_count <= block->destroy[j].instr_count || block->destroy[j].instr_count == 0) && i < block->c_count) {
 			x_instr[ind] = block->create[i].instr_count;
 			y_size[ind] = y_size[ind-1] + DB_SIZE;
+//TODO		y_size[ind] = y_size[ind-1] + block->create[i].size;
 			i++;
 		}
 		// case3 : ocrDbDestroy is before ocrDbCreate, Check the instruction count
 		else if ( j < block->d_count) {
 			x_instr[ind] = block->destroy[j].instr_count;
 			y_size[ind] = y_size[ind-1] - DB_SIZE;
+//TODO			y_size[ind] = y_size[ind-1] + block->create[i].size;
 			j++;
 		}
 	}
@@ -65,6 +68,17 @@ void memory_usage(struct block_info * block)
 // TODO: Compute the difference between ocrDbCreate and ocrDbDestroy that has the same GUID
 // 
 //* input: block_info block that holds the informations about created and detroyed data blocks. 
+int find_destroy_index(struct block_info *block, int create_index){
+	int destroy_index=-1;
+	for(i=0; i<block->d_count; i++){
+		if(block->create[create_index].id == block->destroy[i].id)
+		{
+			destroy_index = i;
+			break;
+		}
+	}
+	return i;
+}
 void db_lifetime(struct block_info *block)
 {
 
@@ -83,26 +97,48 @@ void db_lifetime(struct block_info *block)
 	}
 
 	// loop through ocrDbCreate and match them with their ocrDbDestroy and compute the difference of instructions count. 
-	for(int i=0;  i<block->c_count ;i++)
-	{
+	for(int i=0;  i<block->c_count ;i++){
 		//The case where we have more ocrDbCreate than destroy
-		if(j>=block->d_count )
-		{
+		if(j>=block->d_count ){
 			printf("Ran out of ocrDbDestroy\n");
 			//loop through the remaining and print "inf" lifetime
 			for(;i<block->c_count;i++)
-			{
 				printf("Block %d lifetime: inf. \n", i);
-			}
 		}
-		else
-		{
+		else{
 			printf("Block %d lifetime: %ld instr. %lf seconds\n", i, (block->destroy[j].instr_count-block->create[i].instr_count) , (block->destroy[j].instr_count-block->create[i].instr_count)/INSTR_PER_SEC);
 			j++;
 		}
 	}
+//TODO
+/*
+	for(int i=0;  i<block->c_count ;i++){
+		//The case where we have more ocrDbCreate than destroy
+		if(j>=block->d_count ){
+			printf("Ran out of ocrDbDestroy\n");
+			//loop through the remaining and print "inf" lifetime
+			for(;i<block->c_count;i++)
+				printf("Block %d lifetime: inf. \n", i);
+		}
+		else{
+			int destroy_index = find_destroy_index(block, i);
+			if(destroy_index == -1)
+			{
+				printf("No Corresponding destroy found for block ID#%d\n", block->create[create_index].id);
+				printf("Block #%d, ID#%d ", i, block->create[i].id);
+				printf("lifetime: inf. ");
+			}
+			else{
+				long double instructions_consumed = block->destroy[destroy_index].instr_count - block->create[i].instr_count;
+				printf("Block #%d, ID#%d", i, block->create[i].id);
+				printf("lifetime: %ld", instructions_consumed);
+				printf("instr. %lf" "seconds\n", instructions_consumed / INSTR_PER_SEC);
+				j++;
+			}
+		}
+	}
+*/
 }
-
 
 // ****************** main **********************//
 // Main function that gets called in main.c
