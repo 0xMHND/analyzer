@@ -1,12 +1,12 @@
 #/***************************
  #* input: Binary file cntaining the sympols of the functions. 
- #*				  Trace File from the trace generator
- #*				  The .dbg file for the program to parse.
+ #*                  Trace File from the trace generator
+ #*                  The .dbg file for the program to parse.
  #* output: Parsed file of the functions called, number of instruction before called, when returned, and a summary at the end.
-				
+                
  #* description: This script analyzis the raw trace file and identify the functions called and the place where they where called
- #* 		     The output the results in a file with a summay at the end containing how many times a function is called
- #*				 And the number of instructions it consumed.
+ #*              The output the results in a file with a summay at the end containing how many times a function is called
+ #*                 And the number of instructions it consumed.
 #***************************/
 
 #!/usr/bin/python
@@ -79,8 +79,8 @@ def main():
     stats_inst = {}
     stats_count = {}
 
-	# This loop goes through the symbols file and matches
-	# each symbol address with the name it represents
+    # This loop goes through the symbols file and matches
+    # each symbol address with the name it represents
     for l in syms.stdout:
         l = l.rstrip(os.linesep)
         w = l.split()
@@ -121,10 +121,10 @@ def main():
     count = 0
     counts = {-1:-1}
 
-	# This loop reads through a trace file and grabs each executed instruction name
-	# If the instruction represents a jump to a symbol address representing an OCR function
-	# Then the program writes that function name along with other information to an output file
-	# It also keeps track of returns to figure out when each OCR function call ends.
+    # This loop reads through a trace file and grabs each executed instruction name
+    # If the instruction represents a jump to a symbol address representing an OCR function
+    # Then the program writes that function name along with other information to an output file
+    # It also keeps track of returns to figure out when each OCR function call ends.
     for l in log.stdout:
         l = l.rstrip(os.linesep)
 
@@ -135,9 +135,9 @@ def main():
 
         addr = int(w.group('addr'), 16)
 
-		# After the addresss had been parsed in previous line
-		# Check to see if it matches any parsed symbols
-		# and if it does, write results to output
+        # After the addresss had been parsed in previous line
+        # Check to see if it matches any parsed symbols
+        # and if it does, write results to output
         for k in beg:
             if beg[k] <= addr and end[k] > addr:
                 offset = addr - beg[k]
@@ -161,27 +161,27 @@ def main():
                 if debug > 0:
                     continue
 
-	# print more information if in debug mode
-	# mainly number of calls and addresses used
+    # print more information if in debug mode
+    # mainly number of calls and addresses used
     if debug > 0:
         print '    Addresses resolved:', counter
-	    print ''
-	    print '----- call count -----'
-	    print ''
-	    d_view = [ (v,k) for k,v in stats_count.iteritems() ]
-	    d_view.sort(reverse=True) # natively sort tuples by first element
-	    for v,k in d_view:
-	        if (v != 0):
-	            print "%s: %d" % (k,v)
+        print ''
+        print '----- call count -----'
+        print ''
+        d_view = [ (v,k) for k,v in stats_count.iteritems() ]
+        d_view.sort(reverse=True) # natively sort tuples by first element
+        for v,k in d_view:
+            if (v != 0):
+                print "%s: %d" % (k,v)
 
-	    print ''
-	    print '----- instruction count (total) -----'
-	    print ''
-	    d_view = [ (v,k) for k,v in stats_inst.iteritems() ]
-	    d_view.sort(reverse=True) # natively sort tuples by first element
-	    for v,k in d_view:
-	        if (v != 0):
-	            print "%s: %d" % (k,v)
+        print ''
+        print '----- instruction count (total) -----'
+        print ''
+        d_view = [ (v,k) for k,v in stats_inst.iteritems() ]
+        d_view.sort(reverse=True) # natively sort tuples by first element
+        for v,k in d_view:
+            if (v != 0):
+                print "%s: %d" % (k,v)
 # main end
 
 if __name__ == "__main__":

@@ -15,12 +15,16 @@ int plot_data(uint64_t * xvals, uint64_t * yvals, int size)
 {
 	char buf[BUF_SIZE];
 
+	memset(buf, '\0', BUF_SIZE);
+	snprintf(buf, BUF_SIZE, "%s/chart.dat", LOG_PATH);
+
 	//Open data file for the chart
-	FILE * temp = fopen("chart.dat", "w");
+	FILE * temp = fopen(buf, "w");
 	if (temp == NULL) {
 		fprintf(stderr,"Could not open/create chart.dat file: %s.\n", strerror(errno));
 		return 1;
 	}
+	memset(buf, '\0', BUF_SIZE);
 
 	//Write data to the data file
 	for (int i=0; i < size; i++) {
@@ -50,9 +54,7 @@ int plot_data(uint64_t * xvals, uint64_t * yvals, int size)
 	//set output to be a PNG image file
 	fprintf(gnuplotPipe, "%s\n", "set terminal png truecolor");
 	//set output name
-	fprintf(gnuplotPipe, "%s\n", "set output \'image.png\'");
-	//set a slight offset from the top for aestetics
-	fprintf(gnuplotPipe, "%s\n", "set offset graph 0.1, graph 0.1, graph 0.1, graph 0");
+	fprintf(gnuplotPipe, "set output \'%schart.png\'\n", LOG_PATH);
 
 	//This loops goes through every line of the config file
 	//and feeds them into GNUplot
@@ -72,7 +74,7 @@ int plot_data(uint64_t * xvals, uint64_t * yvals, int size)
 		//send command to GNUplot
 		fprintf(gnuplotPipe, "%s\n", buf);
 	}
-	fprintf(gnuplotPipe, "%s\n", "plot \'chart.dat\' ls 2");
+	fprintf(gnuplotPipe, "plot \'%s/chart.dat\' ls 2\n", LOG_PATH);
 
 	//close GNUplot pipe
 	if (pclose(gnuplotPipe) == -1) {

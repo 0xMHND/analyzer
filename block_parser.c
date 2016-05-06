@@ -11,10 +11,11 @@
 ***************************/
 void datablock_parser(struct block_info * blocks, char * filename)
 {
-	uint64_t count = 0, depth_level;
+	uint64_t count = 0, depth_level, prog_cnt;
 	FILE * f;
 	char buf[BUF_SIZE];
-	char * func_name;
+	char * func_name, *temp;
+	uint64_t args[MAX_NUM_ARGS];
 
 	//Open the OCR functions file for reading
 	if ( (f = fopen( filename, "r")) == NULL ) {
@@ -38,19 +39,22 @@ void datablock_parser(struct block_info * blocks, char * filename)
 		//if the first parsed value is nonzero, save the following info
 		if (strtol(func_name, NULL, 10) != 0) {
 
-			strtol(strtok(NULL, " /|\n\t\r\\"), NULL, 0);		//parse program counter
+			prog_cnt = strtol(strtok(NULL, " /|\n\t\r\\"), NULL, 0);		//parse program counter
 
 			depth_level = strtol(strtok(NULL, " /|\n\t\r\\"), NULL, 10);		//parse depth level
 
 			func_name = strtok(NULL, " /|\n\t\r\\");	//parse function name
 
 			//if a function is returning, add num of instructions to the count
-			if (!strcmp(func_name, "returned.")) {
+			if (strcmp(func_name, "returned.")) {
 				count += strtol(strtok(NULL, " /|\n\t\r\\"), NULL, 10);
 			}
+
+//			printf("count: %ld\n", count);
+	
 			//else if ocrDbCreate() is located, record the number of instructions that have
 			//passed since the beginning of the program
-			else if (!strcmp(func_name, "ocrDbCreate()")) {
+			if (!strcmp(func_name, "ocrDbCreate()")) {
 
 				//if the array is too small, double its size
 				if (blocks->c_count >= blocks->size) {
@@ -92,4 +96,34 @@ void datablock_parser(struct block_info * blocks, char * filename)
 		}
 	}
 	printf("datablock_parser() - Total instructions counted: %ld.\n", count);
+
+	int dcnt = 0;	
+	int ccnt = 0;	
+	while(!feof(f)) {
+	
+		memset ( buf, '\0', BUF_SIZE);		//clear buffer
+		fgets( buf, BUF_SIZE, f);		//get the next line
+		if (feof(f))
+			break;
+
+		if ((temp = strtok(buf, " /|\n\t\r\\")) != NULL) {
+			if (!strcmp(temp, "ocrDbCreate(")) {
+				for (int i = 0; i < 6; i++) {
+					memset ( buf, '\0', BUF_SIZE);		//clear buffer
+					fgets( buf, BUF_SIZE, f);	
+					args[i] = strtol(strtok(buf, " /|\\\n\t\r"), NULL, 16);
+				}
+				blocks->create[ccnt].id = args[0];
+				blocks->create[ccnt].addr = (void *) (args[1]);
+				blocks->create[ccnt].len = args[2];
+				blocks->create[ccnt].flags = (uint16_t) args[3];
+				ccnt++;
+			}
+			else if (!strcmp(temp, "ocrDbDestroy(")) {
+				fgets( buf, BUF_SIZE, f);
+				blocks->destroy[dcnt].id = strtol(strtok(buf, " \\|/\n\t\r"), NULL, 0);
+				dcnt++;
+			}
+		}
+	}
 }

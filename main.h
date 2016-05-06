@@ -19,14 +19,16 @@
 #define READ 0
 #define WRITE 1
 #define RUN_NUM_DIGITS 3
+#define MAX_NUM_ARGS 6
 
 #define OCR_FUNCTIONS 1
 #define OCR_FUNCTIONS_MAGIC "-<| OCR_FUNCTIONS |>-\n"
 #define PROCESSED_DATA 2
-#define PROCESSED_DATA_MAGIC "-<| PREOCESSED_DATA |>-\n"
+#define PROCESSED_DATA_MAGIC "-<| PROCESSED_DATA |>-\n"
 #define MEMORY_ANALYSIS 3
 #define MEMORY_ANALYSIS_MAGIC "-<| MEMORY_ANALYSIS |>-\n"
 
+char * LOG_PATH = NULL;
 
 /******************* S T R U C T S *******************/
 
@@ -34,7 +36,7 @@
 struct dbc {
 	uint64_t instr_count;	//instructions since beginning of program
 	uint64_t depth;	//The depth level the ocrDbCreate was called at
-	uint64_t dbid;		//datablock ID
+	uint64_t id;		//datablock ID
 	void *addr;		//datablock location in memory
 	uint64_t len;		//datablock size
 	uint16_t flags;		//datablock options
@@ -43,14 +45,8 @@ struct dbc {
 //contains arguments of each ocrDbDestroy() call
 struct dbd {
 	uint64_t instr_count;
-	uint64_t dbid;
+	uint64_t id;
 	uint64_t depth;	//The depth level the ocrDbDestroy was called at
-};
-
-//contains arguments of each ocrDbRelease() call
-struct dbr {
-	uint64_t instr_count;
-	uint64_t dbid;
 };
 
 //Contains all necessary variables for easy use of the previously defined structs
@@ -63,10 +59,23 @@ struct block_info
 	int size;		//actual size of both arrays
 };
 
+//Contains a double pointer for the lifetime_info, for random access of the blocks' pairs
+struct lifetime_master{
+	struct lifetime_info ** ptr;
+	int size;
+};
+
+// Contain info of processed data for each block pair
+struct lifetime_info{
+	struct lifetime_info * partner;
+	char *	 			   type;
+	uint64_t 			   id;
+	uint64_t 			   lifetime_instructions;
+	double 	 			   lifetime_time ;
+};
 
 /******************* F U N C T I O N S *******************/
 //not all included. functions headers in source file (.c)
-
 
 void dbc_init (struct dbc create );
 void dbd_init (struct dbd destroy);

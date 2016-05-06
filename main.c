@@ -3,12 +3,14 @@
 #include <stdlib.h>
 #include <string.h>
 
+
 #include "block_parser.c"
 #include "memory_analyzing.c"
 #include "visualization.c"
+#include "formatter.c"
 #include "data_processing.c"
 #include "storage.c"
-#include "formatter.c"
+
 
 /***************************
  * input: 	struct to initialize
@@ -18,7 +20,7 @@
 void dbc_init (struct dbc create)
 {
 	create.instr_count = -1;
-	create.dbid = -1;
+	create.id = -1;
 	create.addr = NULL;
 	create.len  = DB_SIZE;
 	create.flags= 0;
@@ -32,7 +34,7 @@ void dbc_init (struct dbc create)
 void dbd_init(struct dbd destroy)
 {
 	destroy.instr_count = -1;
-	destroy.dbid = 0;
+	destroy.id = 0;
 }
 
 /***************************
@@ -61,7 +63,6 @@ int main(int argc, char ** argv)
 {
 	struct block_info blocks;
 	char buf[BUF_SIZE];
-	char * store_dir;
 
 	//exit if no filename is entered
 	//or multiple are entered
@@ -70,26 +71,29 @@ int main(int argc, char ** argv)
 		exit(1);
 	}
 
-	store_dir = next_folder();
-	snprintf(buf, BUF_SIZE, "cp %s %s", argv[1], store_dir);
+	if ((LOG_PATH = next_folder()) == NULL) {
+		printf("Log Path is NULL. Exiting...\n");
+		exit(EXIT_FAILURE);
+	}
+	snprintf(buf, BUF_SIZE, "cp %s %s", argv[1], LOG_PATH);
 	if (system(buf) == -1) {
-		fprintf(stderr, "Could not copy \"%s\" into \"%s\": %s.\n", buf, store_dir, strerror(errno));
+		fprintf(stderr, "Could not copy \"%s\" into \"%s\": %s.\n", buf, LOG_PATH, strerror(errno));
 		return 1;
 	}
 
 	block_info_init(&blocks);
 	datablock_parser(&blocks, argv[1]);
-	formatter_write((void *)&blocks, OCR_FUNCTIONS, store_dir);
+	formatter_write((void *)&blocks, OCR_FUNCTIONS);
 
 /*
 	//printf statements for debugging
 	printf("ocrDbCreate :");
 	for (int i = 0; i < blocks.c_count; i++)
-		printf(" %ld  ",blocks.create[i].instr_count);
+		printf(" %ld  ",blocks.create[i].id);
 	printf("\n");
 	printf("ocrDbDestroy :");
 	for (int i = 0; i < blocks.d_count; i++)
-		printf(" %ld  ",blocks.destroy[i].instr_count);
+		printf(" %ld  ",blocks.destroy[i].id);
 	printf("\n");
 */
 
@@ -98,7 +102,6 @@ int main(int argc, char ** argv)
 // CAll for memory_analyzing block
 	memory_leak(&blocks);
 
-	free(store_dir);
 	free(blocks.create );
 	free(blocks.destroy);
 	return 0;
