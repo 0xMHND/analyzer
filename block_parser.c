@@ -97,6 +97,9 @@ void datablock_parser(struct block_info * blocks, char * filename)
 	}
 	printf("datablock_parser() - Total instructions counted: %ld.\n", count);
 
+
+	//This next loop parses the data at the bottom of the file
+	//that represents the functions arguments of ocrDb functions
 	int dcnt = 0;	
 	int ccnt = 0;	
 	while(!feof(f)) {
@@ -107,19 +110,26 @@ void datablock_parser(struct block_info * blocks, char * filename)
 			break;
 
 		if ((temp = strtok(buf, " /|\n\t\r\\")) != NULL) {
+
+			//if there is an ocrDbCreate() call, save the arguments
 			if (!strcmp(temp, "ocrDbCreate(")) {
+				//This loop reads the arguments one by one
+				//and converts them to integers instead of strings
 				for (int i = 0; i < 6; i++) {
 					memset ( buf, '\0', BUF_SIZE);		//clear buffer
 					fgets( buf, BUF_SIZE, f);	
 					args[i] = strtol(strtok(buf, " /|\\\n\t\r"), NULL, 16);
 				}
+				//arguments assigned positions in data structure
 				blocks->create[ccnt].id = args[0];
 				blocks->create[ccnt].addr = (void *) (args[1]);
 				blocks->create[ccnt].len = args[2];
 				blocks->create[ccnt].flags = (uint16_t) args[3];
 				ccnt++;
 			}
+			//if there is an ocrDbDestroy() call, save the arguments
 			else if (!strcmp(temp, "ocrDbDestroy(")) {
+				//save the only argument, the block ID
 				fgets( buf, BUF_SIZE, f);
 				blocks->destroy[dcnt].id = strtol(strtok(buf, " \\|/\n\t\r"), NULL, 0);
 				dcnt++;

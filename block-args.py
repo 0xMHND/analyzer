@@ -112,9 +112,12 @@ def main():
     print 'Reading trace log file', fnlog, '...'
     log = subprocess.Popen(['grep', ' Executed ', fnlog], stdout=subprocess.PIPE)
 
+    # 3 regex, one for each line, one for getting register outputs and one for getting
+    # register inputs when "dereferencing" a pointer
     p = re.compile("\[PC (?P<addr>[x0-9a-zA-Z]+)\].*Executed")
     p2 = re.compile("\[PC (?P<addr>[x0-9a-zA-Z]+)\].*Executed '(?P<name>[A-Za-z1-9]+)': Output: r[0-9]+=(?P<arg>[x0-9a-f]+)")
     p3 = re.compile("\[PC (?P<addr>[x0-9a-zA-Z]+)\].*Executed '(?P<name>[A-Za-z1-9]+)': Input: r0=(?P<arg1>[x0-9a-f]+), r[0-9]+=(?P<arg2>[x0-9a-f]+)")
+
 
     counter = 0
     inst_count_since_beg = 0
@@ -147,6 +150,8 @@ def main():
 
         addr = int(w.group('addr'), 16)
 
+	# If a ocrDbCreate() call was issued, look in the next few lines 
+	# for the registers that contain the function call's arguments
         if look_for_args[0] > 0:
             v = p2.search(l)
             if v is not None and v.group('name') == 'bit64op1i':
@@ -159,6 +164,8 @@ def main():
                 incr_count = 1
                 look_for_addr = 1
                 look_for_id = 1
+	# If an ID arguments was found, look for the actual
+	# value the pointer is pointing to
         if look_for_id > 0:
             v = p3.search(l)
             if v is not None and v.group('name') == 'store64ri' and v.group('arg2') == c_id:
@@ -166,6 +173,8 @@ def main():
                 c_list[c_cnt].insert(0, v.group('arg1'))
                 look_for_id = 0
                 incr_count += 1
+	# If an address pointer was found, look for the actual
+	# address this pointer is pointing to
         if look_for_addr > 0:
             v = p3.search(l)
             if v is not None and v.group('name') == 'store64ri' and v.group('arg2') == c_addr:
@@ -177,7 +186,8 @@ def main():
             c_cnt += 1
             incr_count = 0 
 
-
+	# If an ocrDbDestroy() call was issued, look for the function
+	# argument in the next few lines
         if look_for_args[1] > 0:
             u = p2.search(l)
             if u is not None and u.group('name') == 'bit64op1i':
@@ -222,7 +232,8 @@ def main():
                     continue
 
 
-
+    # print the ocrDbCreate() argument list that was saved
+    # 2 loops are needed because it is a 2d array
     print '\n----- ocrDbCreate() arguments -----', "%d"%c_cnt
     for i in range(c_cnt):
         print 'ocrDbCreate('
@@ -230,6 +241,8 @@ def main():
 			print '\t', c_list[i][j]
         print ")"
 
+    # print the ocrDbDestroy() argument list that was saved
+    # 2 loops are needed because it is a 2d array
     print '\n----- ocrDbDestroy() arguments -----', "%d"%d_cnt
     for i in range(d_cnt):
         print 'ocrDbDestroy('
