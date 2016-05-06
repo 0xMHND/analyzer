@@ -35,7 +35,8 @@ int plot_data(uint64_t * xvals, uint64_t * yvals, int size)
 
 		fprintf(temp, "%ld %ld\n", xvals[i], yvals[i]); //Write the data to a temporary file
 	}
-	fclose(temp);
+	if (fclose(temp) == EOF)
+		 fprintf(stderr,"Could not close chart.dat file pointer: %s.\n", strerror(errno));
 
 	//Open the config file that holds chart options
 	FILE * cfg = fopen(CONFIG, "r");

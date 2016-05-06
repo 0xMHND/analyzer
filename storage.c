@@ -37,7 +37,7 @@ char * next_folder ()
 					return NULL;
 				}
 				if ((dir = opendir(LOGS_PATH)) == NULL) {
-					fprintf(stderr, "Cannot open directory %s: %s.\n", LOGS_PATH, strerror(errno));
+					fprintf(stderr, "Error Persists. Cannot open directory %s: %s.\n", LOGS_PATH, strerror(errno));
 					return NULL;
 				}
 			}
@@ -71,7 +71,9 @@ char * next_folder ()
 			}
 		}
 	}
-	closedir(dir);
+	if (closedir(dir) == -1)
+		fprintf(stderr, "Could not close directory %s: %s.\n", LOGS_PATH, strerror(errno));
+		
 	run++;
 
 	memset(buf, '\0', BUF_SIZE);

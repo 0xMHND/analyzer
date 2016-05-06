@@ -72,14 +72,16 @@ void memory_usage(struct block_info * block)
 		printf("Error occurred while making output graph.\n");
 }
 
-// ************** Feature 1 : Data  block's lifetime ****************** // 
-// Compute the difference between an ocrDbCreate and ocrDbDestory and print that. 
-// For now the method is first created is first destroyed
-//
-// input: block_info block that holds the informations about created and detroyed data blocks. 
-//
+/***************************
+ * input: block_info block that holds the informations about created and detroyed data blocks. 
+ * 		  an index of the DbDestroy() to check.
+ * output: index of correspondent DbCreate()
+ * description:	This function loop through all the DbCreate() until it finds one 
+ * 				with the same id as DbDestroy[destroy_index].
+***************************/
 int find_create_index(struct block_info *block, int destroy_index){
 	int create_index=-1;
+// loop through all the DbCreate() until it finds one with the same id as DbDestroy[destroy_index]
 	for(int i=0; i<block->c_count; i++){
 		if(block->create[i].id == block->destroy[destroy_index].id)
 		{
@@ -89,9 +91,17 @@ int find_create_index(struct block_info *block, int destroy_index){
 	}
 	return create_index;
 }
+/***************************
+ * input: block_info block that holds the informations about created and detroyed data blocks. 
+ * 		  an index of the DbCreate() to check.
+ * output: index of correspondent DbDestroy()
+ * description:	This function loop through all the DbDestroy() until it finds one 
+ * 				with the same id as DbCreate[create_index].
+***************************/
 int find_destroy_index(struct block_info *block, int create_index){
 	int destroy_index=-1;
 	for(int i=0; i<block->d_count; i++){
+// loop through all the DbDestroy() until it finds one with the same id as DbCreate[create_index]
 		if(block->create[create_index].id == block->destroy[i].id)
 		{
 			destroy_index = i;
@@ -101,6 +111,12 @@ int find_destroy_index(struct block_info *block, int create_index){
 	return destroy_index;
 }
 
+// ************** Feature 1 : Data  block's lifetime ****************** // 
+// Compute the difference between an ocrDbCreate and ocrDbDestory and print that. 
+// For now the method is first created is first destroyed
+//
+// input: block_info block that holds the informations about created and detroyed data blocks. 
+//
 
 void db_lifetime(struct block_info *block)
 {
@@ -122,6 +138,7 @@ void db_lifetime(struct block_info *block)
 	}
 
 	// loop through ocrDbCreate and match them with their ocrDbDestroy and compute the difference of instructions count. 
+	// and time, plus store attributes and pass them to the formatter. 
 	for(int i=0;  i<block->c_count ;i++){
 		//The case where we have more ocrDbCreate than destroy
 		if(j>=block->d_count ){
@@ -134,9 +151,15 @@ void db_lifetime(struct block_info *block)
 			int destroy_index = find_destroy_index(block, i);
 			if(destroy_index == -1)
 			{
-//				printf("No Corresponding destroy found for block ID#%#lx\n", block->create[i].id);
-				printf("Block #%d, ID#%#lx ", i, block->create[i].id);
-				printf("lifetime: inf.\n");
+				long unsigned int address = (long unsigned int)block->create[i].addr;
+				printf("Block #%d,\n\tID #%#lx\n", i, block->create[i].id);
+				printf("\tAddr. %#lx\n", address);
+				printf("\tSize %ld Bytes\n",  (long int)block->create[i].len);
+				printf("\tFlags %#x\n",  block->create[i].flags);
+				printf("\tStart Time: %lf\n", (double) block->create[i].instr_count);
+				printf("\tEnd Time: unknown\n");
+				printf("\tlifetime: inf.\n");
+				printf("\tinstr. unknown " "seconds\n");
 			}
 			else{
 				struct lifetime_info * create = malloc(sizeof(struct lifetime_info));				
@@ -156,10 +179,21 @@ void db_lifetime(struct block_info *block)
 				destroy->lifetime_instructions = instructions_consumed;
 				create->lifetime_time = time;
 				destroy->lifetime_time = time;
-				
-				printf("Block #%d, ID#%#lx\t", i, block->create[i].id);
-				printf("lifetime: %lf\t", (double)instructions_consumed);
-				printf("instr. %lf" "seconds\n", (double)time);
+				create->addr = block->create[i].addr;
+				create->flags = block->create[i].flags;
+				create->len = block->create[i].len;
+				create->instr_count = block->create[i].instr_count;
+				destroy->instr_count = block->destroy[destroy_index].instr_count;
+				long unsigned int address = (long unsigned int)block->create[i].addr;
+ 
+				printf("Block #%d,\n\tID #%#lx\n", i, block->create[i].id);
+				printf("\tAddr. %#lx\n", address);
+				printf("\tSize %ld Bytes\n", (long int) block->create[i].len);
+				printf("\tFlags %#x\n",  block->create[i].flags);
+				printf("\tStart Time: %lf\n", (double) block->create[i].instr_count);
+				printf("\tEnd Time:   %lf\n", (double) block->destroy[destroy_index].instr_count);
+				printf("\tlifetime: %lf\n", (double)instructions_consumed);
+				printf("\tinstr. %lf" "seconds\n", (double)time);
 				j++;
 			}
 		}
@@ -168,7 +202,7 @@ void db_lifetime(struct block_info *block)
 	master->size = cnt;
 	
 	formatter_write((void*)master,PROCESSED_DATA);
-
+	// free the allocated pointer
 	for(int i=0;i<cnt;i++)
 	{
 		free(ptr[i]->partner);

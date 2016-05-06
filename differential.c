@@ -80,6 +80,7 @@ char* get_file_name(int index, char* dir_name, int file_num){
 
 	if ((dp = opendir (buf)) == NULL) {
 		fprintf(stderr, "Could not open directory %s: %s", buf, strerror(errno));
+		exit(EXIT_FAILURE);
 	}
 		
 	i = 0;
@@ -90,7 +91,10 @@ char* get_file_name(int index, char* dir_name, int file_num){
 				i++;
 		}
 	}
-	closedir(dp);
+
+	if (closedir(dp) == -1)
+		fprintf(stderr, "Could not close directory %s: %s", buf, strerror(errno));
+
 	//return the ith of the file
 	char *name = malloc(BUF_SIZE*sizeof(char));
 	strcpy(name, name_array[index]);
@@ -107,7 +111,10 @@ int get_file_num(char* dir_name){
 		fprintf(stderr, "snprintf: %s",strerror(errno));
 	}
 
-	dp = opendir(buf);
+	if ((dp = opendir (buf)) == NULL) {
+		fprintf(stderr, "Could not open directory %s: %s", buf, strerror(errno));
+		exit(EXIT_FAILURE);
+	}
 
 	//count the files present in the directory
 	while ((dir = readdir (dp))!= NULL) {
@@ -115,7 +122,9 @@ int get_file_num(char* dir_name){
 			count++;	
 		}
 	}
-	closedir(dp);
+	if (closedir(dp) == -1)
+		fprintf(stderr, "Could not close directory %s: %s", buf, strerror(errno));
+
 	return count;
 }
 

@@ -20,7 +20,7 @@ void datablock_parser(struct block_info * blocks, char * filename)
 	//Open the OCR functions file for reading
 	if ( (f = fopen( filename, "r")) == NULL ) {
 		perror("Cannot open file specified");
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 
 	//For every iteration, read the next line in the file and parse the
@@ -30,8 +30,11 @@ void datablock_parser(struct block_info * blocks, char * filename)
 	while(!feof(f)) {
 		
 		memset ( buf, '\0', BUF_SIZE);		//clear buffer
-		if (fgets( buf, BUF_SIZE, f) == NULL)	//get the next line
-			break;
+		fgets(buf, BUF_SIZE, f);
+		if (ferror(f)) {
+			fprintf(stderr,"Could not read from file %s: %s.\n", filename, strerror(errno));
+			exit(EXIT_FAILURE);
+		}
 
 		//if there is only whitespace, work done. break out of loop
 		if ((func_name = strtok(buf, " /|\n\t\r\\")) == NULL)
@@ -105,7 +108,12 @@ void datablock_parser(struct block_info * blocks, char * filename)
 	while(!feof(f)) {
 	
 		memset ( buf, '\0', BUF_SIZE);		//clear buffer
-		fgets( buf, BUF_SIZE, f);		//get the next line
+		fgets(buf, BUF_SIZE, f);
+		if (ferror(f)) {
+			fprintf(stderr,"Could not read from file %s: %s.\n", filename, strerror(errno));
+			exit(EXIT_FAILURE);
+		}
+
 		if (feof(f))
 			break;
 
@@ -117,7 +125,11 @@ void datablock_parser(struct block_info * blocks, char * filename)
 				//and converts them to integers instead of strings
 				for (int i = 0; i < 6; i++) {
 					memset ( buf, '\0', BUF_SIZE);		//clear buffer
-					fgets( buf, BUF_SIZE, f);	
+					fgets(buf, BUF_SIZE, f);
+					if (ferror(f)) {
+						fprintf(stderr,"Could not read from file %s: %s.\n", filename, strerror(errno));
+						exit(EXIT_FAILURE);
+					}
 					args[i] = strtol(strtok(buf, " /|\\\n\t\r"), NULL, 16);
 				}
 				//arguments assigned positions in data structure
@@ -130,10 +142,16 @@ void datablock_parser(struct block_info * blocks, char * filename)
 			//if there is an ocrDbDestroy() call, save the arguments
 			else if (!strcmp(temp, "ocrDbDestroy(")) {
 				//save the only argument, the block ID
-				fgets( buf, BUF_SIZE, f);
+				fgets(buf, BUF_SIZE, f);
+				if (ferror(f)) {
+					fprintf(stderr,"Could not read from file %s: %s.\n", filename, strerror(errno));
+					exit(EXIT_FAILURE);
+				}
 				blocks->destroy[dcnt].id = strtol(strtok(buf, " \\|/\n\t\r"), NULL, 0);
 				dcnt++;
 			}
 		}
 	}
+	if (fclose(f) == -1)
+		 fprintf(stderr,"Could not close file pointer to %s: %s.\n", filename, strerror(errno));
 }

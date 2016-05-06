@@ -68,7 +68,11 @@ def main():
 
     # read symbols from binary
     print 'Reading symbols from binary', fnbin, '...'
-    syms = subprocess.Popen([path + 'xstg-linux-elf-nm', '-n', fnbin], stdout=subprocess.PIPE)
+    try:
+        syms = subprocess.Popen([path + 'xstg-linux-elf-nm', '-n', fnbin], stdout=subprocess.PIPE)
+    except subprocess.CalledProcessError:
+	print "Could not open pipe to symbols file"
+        sys.exit(1)
 
     beg = {}
     end = {}
@@ -110,7 +114,11 @@ def main():
 
     # read log & attribute to symbols
     print 'Reading trace log file', fnlog, '...'
-    log = subprocess.Popen(['grep', ' Executed ', fnlog], stdout=subprocess.PIPE)
+    try:
+        log = subprocess.Popen(['grep', ' Executed ', fnlog], stdout=subprocess.PIPE)
+    except subprocess.CalledProcessError:
+	print "Could not open pipe to trace log file"
+        sys.exit(1)
 
     # 3 regex, one for each line, one for getting register outputs and one for getting
     # register inputs when "dereferencing" a pointer
@@ -231,6 +239,17 @@ def main():
                 if debug > 0:
                     continue
 
+    try:
+        log.kill()
+    except OSError:
+        # can't kill a dead proc
+        pass
+
+    try:
+        syms.kill()
+    except OSError:
+        # can't kill a dead proc
+        pass
 
     # print the ocrDbCreate() argument list that was saved
     # 2 loops are needed because it is a 2d array

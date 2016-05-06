@@ -29,5 +29,7 @@ du:
 
 dblog:
 	python ~/analyzer/block-args.py -p ~/xstg/tg/tg/install/bin/ -b ~/xstg/apps/apps/examples/fib/build/tg/fib.dbg -l ~/parsed/fib.log.rck000.cub00.skt0.cls000.blk00.XE.00 &> dblog.out
+dblog-xe1:
+	python ~/analyzer/block-args.py -p ~/xstg/tg/tg/install/bin/ -b ~/xstg/apps/apps/examples/fib/build/tg/fib.dbg -l ~/parsed/fib.log.rck000.cub00.skt0.cls000.blk00.XE.00 &> dblog-xe1.out
 ocrparse:
 	python ~/analyzer/xe-analysis.py -p ~/xstg/tg/tg/install/bin/ -b ~/xstg/apps/apps/examples/fib/build/tg/fib.dbg -l ~/parsed/fib.log.rck000.cub00.skt0.cls000.blk00.XE.00 &> ~/parsed2/fib.XE.00.OCR-parsed.out

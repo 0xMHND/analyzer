@@ -25,8 +25,6 @@
 #define OCR_FUNCTIONS_MAGIC "-<| OCR_FUNCTIONS |>-\n"
 #define PROCESSED_DATA 2
 #define PROCESSED_DATA_MAGIC "-<| PROCESSED_DATA |>-\n"
-#define MEMORY_ANALYSIS 3
-#define MEMORY_ANALYSIS_MAGIC "-<| MEMORY_ANALYSIS |>-\n"
 
 char * LOG_PATH = NULL;
 
@@ -67,11 +65,15 @@ struct lifetime_master{
 
 // Contain info of processed data for each block pair
 struct lifetime_info{
-	struct lifetime_info * partner;
-	char *	 			   type;
-	uint64_t 			   id;
-	uint64_t 			   lifetime_instructions;
-	double 	 			   lifetime_time ;
+	struct lifetime_info * partner; // points to its pair        
+	uint64_t 			   instr_count;	//instructions since beginning of program
+	char *	 			   type; // destroy or create
+	uint64_t 			   id; //datablock's id
+	uint64_t 			   lifetime_instructions; //Block's lifetime in instructions
+	double 	 			   lifetime_time ;  //Block's lifetime in second
+	void 				   *addr;		//datablock location in memory
+	uint64_t 			   len;		//datablock size
+	uint16_t 			   flags;		//datablock options
 };
 
 /******************* F U N C T I O N S *******************/
