@@ -40,18 +40,15 @@ void memory_usage(struct block_info * block)
 	y_size[0] = block->create[0].len;;
 	for(int i = 1, j = 0; i+j < block->c_count + block->d_count; )
 	{
-		// case1 : if the number od ocrDbDestroy exceeds ocrDbCreate 
-//		if ( j >= block->c_count )
-//			break;
 
-		// case2 : ocrDbCreate is before ocrDbDestroy, Check the instruction count
+		// case1 : ocrDbCreate is before ocrDbDestroy, Check the instruction count
 		if ( (block->create[i].instr_count < block->destroy[j].instr_count) && i < block->c_count) {
 			x_instr[ind] = block->create[i].instr_count;
 			y_size[ind] = y_size[ind-1] + block->create[i].len;
 			i++;
 			ind++;
 		}
-		// case3 : ocrDbDestroy is before ocrDbCreate, Check the instruction count
+		// case2 : ocrDbDestroy is before ocrDbCreate, Check the instruction count
 		else if ( j < block->d_count) {
 			int create_index = find_create_index(block, j);
 			if((block->destroy[j].instr_count < block->create[i].instr_count || i >= block->c_count)){
@@ -60,9 +57,6 @@ void memory_usage(struct block_info * block)
 					y_size[ind] = y_size[ind-1] - block->create[create_index].len;
 					ind++;
 				} 
-//else {
-//					y_size[ind] = y_size[ind-1] - 4;
-//				}
 				j++;	
 			}
 		}
@@ -100,8 +94,8 @@ int find_create_index(struct block_info *block, int destroy_index){
 ***************************/
 int find_destroy_index(struct block_info *block, int create_index){
 	int destroy_index=-1;
-	for(int i=0; i<block->d_count; i++){
 // loop through all the DbDestroy() until it finds one with the same id as DbCreate[create_index]
+	for(int i=0; i<block->d_count; i++){
 		if(block->create[create_index].id == block->destroy[i].id)
 		{
 			destroy_index = i;
@@ -147,9 +141,9 @@ void db_lifetime(struct block_info *block)
 			for(;i<block->c_count;i++)
 				printf("Block %d lifetime: inf. \n", i);
 		}
-		else{
-			int destroy_index = find_destroy_index(block, i);
-			if(destroy_index == -1)
+		else{   
+			int destroy_index = find_destroy_index(block, i); 
+			if(destroy_index == -1) // if no matching pair for DbCreate, print processed data
 			{
 				long unsigned int address = (long unsigned int)block->create[i].addr;
 				printf("Block #%d,\n\tID #%#lx\n", i, block->create[i].id);
@@ -161,7 +155,7 @@ void db_lifetime(struct block_info *block)
 				printf("\tlifetime: inf.\n");
 				printf("\tinstr. unknown " "seconds\n");
 			}
-			else{
+			else{ // if a matching pair exits, save data processed and send it to the formatter(storage), also print them to screen.
 				struct lifetime_info * create = malloc(sizeof(struct lifetime_info));				
 				struct lifetime_info * destroy = malloc(sizeof(struct lifetime_info));				
 				double instructions_consumed = block->destroy[destroy_index].instr_count - block->create[i].instr_count;

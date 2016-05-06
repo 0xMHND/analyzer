@@ -31,10 +31,10 @@ void memory_leak(struct block_info *block)
 	// Check the number of the DataBlocks created and destroyed
 	if(ocrDbCreate > ocrDbDestroy)
 	{
-		printf("There is a memory leak of %d Bytes\nThere should be %d extra ocrDbDestroy calls.\n", (diff)*DB_SIZE,diff);
+		printf("There is a memory leak of %d Bytes\nThere should be %d extra ocrDbDestroy calls.\n", (diff)*80,diff);
 		// prints the location of the blocks that got created but not destroyed 
-		for(int i=0; i+diff-1<block->c_count;i++)
-			printf("Memory leak happens at instruction number %ld\n", block->create[diff+i-1].instr_count);
+//		for(int i=0; i+diff-1<block->c_count;i++)
+//			printf("Memory leak happens at instruction number %ld\n", block->create[diff+i-1].instr_count);
 	}
 	else
 		printf("No Memory Leaks\n");
